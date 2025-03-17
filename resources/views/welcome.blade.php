@@ -35,6 +35,6 @@
         <p>Nenhuma pessoa encontrada para: <?= htmlspecialchars($pesquisar) ?></p> 
     <?php endif; ?>
 
-    <a href="index.php?action=cadastro">Realizar Novo Cadastro</a>
+    <a href="{{ route('cadastro') }}">Realizar Novo Cadastro</a>
 </body>
 </html>

@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::get('/cadastro', function () {
     return view('cadastroPage');
-});
+})->name('cadastro');
 
 Route::get('/endereco', function () {
     return view('enderecoPage');
