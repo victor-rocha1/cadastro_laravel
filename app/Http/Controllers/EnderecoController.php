@@ -3,36 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Endereco;
 
 class EnderecoController extends Controller
 {
-    public function cadastrarEndereco()
+    // Método GET para exibir o formulário
+    public function formEndereco()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (!isset($_POST['id_pessoa']) || empty($_POST['id_pessoa'])) {
-                var_dump($_POST);
-                die("Erro: ID da pessoa não encontrado.");
-            }
+        return view('enderecoPage'); 
+    }
 
-            $dadosEndereco = [
-                'id_pessoa' => $_POST['id_pessoa'],
-                'cep' => $_POST['cep'],
-                'logradouro' => $_POST['logradouro'],
-                'numero' => $_POST['numero'],
-                'complemento' => $_POST['complemento'],
-                'bairro' => $_POST['bairro'],
-                'estado' => $_POST['estado'],
-                'cidade' => $_POST['cidade']
-            ];
+    // Método POST para processar o envio dos dados
+    public function cadastrarEndereco(Request $request)
+    {
+        // Validação dos dados
+        $validated = $request->validate([
+            'id_pessoa' => 'required|exists:pessoas,id',
+            'cep' => 'required|string',
+            'logradouro' => 'required|string',
+            'numero' => 'required|string',
+            'complemento' => 'nullable|string',
+            'bairro' => 'required|string',
+            'estado' => 'required|string',
+            'cidade' => 'required|string',
+        ]);
 
-            if (salvarEndereco($dadosEndereco)) {
-                header('Location: index.php?action=pesquisa');
-                exit;
-            } else {
-                echo "Erro ao cadastrar endereço.";
-            }
+        // Criar o endereço no banco de dados
+        $endereco = Endereco::create($validated);
+
+        // Verificar se o endereço foi criado com sucesso
+        if ($endereco) {
+            return redirect()->route('home')->with('success', 'Endereço cadastrado com sucesso!');
         } else {
-            include '../app/Views/cadastroEndereco.php';
+            return back()->withErrors(['erro' => 'Erro ao cadastrar endereço.']);
         }
     }
 }

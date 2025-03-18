@@ -9,7 +9,7 @@
 <body>
     <h1>Filtrar Pessoas Cadastradas</h1>
     
-    <form method="POST" action="{{ route('pesquisar') }}">
+    <form method="POST" action="{{ route('home') }}">
         @csrf
         <label for="pesquisar">Pesquisar por nome ou CPF:</label><br>
         <input type="text" id="pesquisar" name="pesquisar" placeholder="Digite o nome ou CPF" required> <br>
@@ -30,6 +30,6 @@
         <p>Nenhuma pessoa encontrada para: {{ $pesquisar }}</p>
     @endif
 
-    <a href="{{ route('cadastro') }}">Realizar Novo Cadastro</a>
+    <a href="{{ route('cadastroPage') }}">Realizar Novo Cadastro</a>
 </body>
 </html>

@@ -9,9 +9,21 @@
 
 <body>
     <h1>Cadastro de Endereço</h1>
-    <form method="POST" action="index.php?action=cadastroEndereco">
 
-        <input type="hidden" name="id_pessoa" value="<?php echo isset($_GET['id_pessoa']) ? $_GET['id_pessoa'] : ''; ?>">
+    @if ($errors->any())
+    <div style="color: red;">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    <form method="POST" action="{{ route('cadastroEndereco') }}">
+        @csrf
+
+        <input type="hidden" name="id_pessoa" value="{{ $id_pessoa ?? '' }}">
 
         <label for="cep">CEP:</label><br>
         <input type="text" name="cep" id="cep" required><br>

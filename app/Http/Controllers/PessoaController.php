@@ -7,7 +7,8 @@ use App\Models\Pessoa;
 
 class PessoaController extends Controller
 {
-    public function cadastro(Request $request) {
+    public function cadastro(Request $request)
+    {
         if ($request->isMethod('post')) {
             $dadosPessoa = $request->validate([
                 'nome' => 'required|string|max:255',
@@ -28,6 +29,6 @@ class PessoaController extends Controller
             }
         }
 
-        return view('cadastroPessoa');
+        return view('cadastroPage');
     }
 }
