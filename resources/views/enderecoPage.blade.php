@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Cadastrar Usuário')
+@section('title', 'Cadastrar Endereço')
 
-@section('header', 'Sistema de Cadastro')
+@section('header', 'Cadastrar Endereço')
 
 @section('content')
 
@@ -35,14 +35,5 @@
     <button type="submit">Finalizar Cadastro</button>
 </form>
 
-@if ($errors->any())
-<div style="color: red;">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
-
+@include('layouts.errors')
 @endsection
