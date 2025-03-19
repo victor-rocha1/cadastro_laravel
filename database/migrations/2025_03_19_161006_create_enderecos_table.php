@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('enderecos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_pessoa')->constrained('pessoas')->onDelete('cascade');
-            $table->string('cep', 10);
+            $table->string('cep', 8);
             $table->string('logradouro', 255);
             $table->string('numero', 20);
             $table->string('complemento', 255)->nullable();
