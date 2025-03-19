@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Cadastrar Usuário')
+@section('title', 'Sistema de Cadastro')
 
 @section('header', 'Sistema de Cadastro')
 
@@ -29,9 +29,5 @@
 @endif
 
 <a href="{{ route('cadastroPage') }}">Realizar Novo Cadastro</a>
-@endsection
 
-
-<!-- Esconde a parte de erros, que será usada somente nos forms de cadastro -->
-@section('errors')  
 @endsection

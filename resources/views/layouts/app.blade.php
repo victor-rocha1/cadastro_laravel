@@ -10,8 +10,18 @@
 <body>
     <h1>@yield('header')</h1>
 
-    
+
     @yield('content')
+
+    @if ($errors->any())
+    <div style="color: red;">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 </body>
 
 </html>

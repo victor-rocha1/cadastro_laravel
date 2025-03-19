@@ -19,10 +19,12 @@ Route::get('/', function () {
 })->name('home');
 
 // Rota para exibir o formulário de cadastro de pessoa
-Route::get('/cadastro', [PessoaController::class, 'cadastro'])->name('cadastroPage');
+Route::get('/cadastro', [PessoaController::class, 'cadastro'])
+    ->name('cadastroPage');
 
 // Rota para processar o envio do formulário de cadastro de pessoa
-Route::post('/cadastro', [PessoaController::class, 'cadastro']);
+Route::post('/cadastro', [PessoaController::class, 'cadastro'])
+    ->name('cadastroPage');;
 
 
 // Rota GET para exibir o formulário de cadastro de endereço
