@@ -20,13 +20,9 @@ class PessoaController extends Controller
                 'email' => 'nullable|email|max:255|unique:pessoas,email',
             ]);
 
-            $pessoa = Pessoa::create($dadosPessoa); // Salva no banco de dados com Eloquent
+            session(['dados_pessoa' => $dadosPessoa]);
 
-            if ($pessoa) {
-                return redirect()->route('cadastroEnderecoForm', ['id_pessoa' => $pessoa->id]);
-            } else {
-                return back()->withErrors(['Erro ao cadastrar pessoa.']);
-            }
+            return redirect()->route('cadastroEnderecoForm');
         }
 
         return view('cadastroPage');
