@@ -1,12 +1,11 @@
 @extends('layouts.app')
 
-@extends('layouts.errors')
-
 @section('title', 'Cadastrar Usuário')
 
 @section('header', 'Cadastrar Usuário')
 
 @section('content')
+
 <form method="POST" action="{{ route('cadastroPage') }}">
     @csrf
 
@@ -33,6 +32,4 @@
 
     <button type="submit">Próximo</button>
 </form>
-
-@include('layouts.errors')
 @endsection

@@ -23,7 +23,7 @@ class PessoaController extends Controller
             $pessoa = Pessoa::create($dadosPessoa); // Salva no banco de dados com Eloquent
 
             if ($pessoa) {
-                return redirect()->route('cadastroEndereco', ['id_pessoa' => $pessoa->id]);
+                return redirect()->route('cadastroEnderecoForm', ['id_pessoa' => $pessoa->id]);
             } else {
                 return back()->withErrors(['Erro ao cadastrar pessoa.']);
             }
