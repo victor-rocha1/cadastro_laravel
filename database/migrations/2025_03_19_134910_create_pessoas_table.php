@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string('nome', 255);
             $table->string('nome_social', 255)->nullable();
-            $table->string('cpf', 11)->unique();
+            $table->string('cpf', 14)->unique();
             $table->string('nome_pai', 255)->nullable();
             $table->string('nome_mae', 255)->nullable();
             $table->string('telefone', 20)->nullable();
