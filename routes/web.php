@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EnderecoController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PessoaController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::match(['get', 'post'], '/', [HomeController::class, 'pesquisar']) // Aceita post e get
+    ->name('home');
+
 
 // Rota para exibir o formulário de cadastro de pessoa
 Route::get('/cadastro', [PessoaController::class, 'cadastro'])
