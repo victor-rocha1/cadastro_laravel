@@ -12,17 +12,12 @@
     <button type="submit">Pesquisar</button>
 </form>
 
+@if (isset($erro))
+<div style="color: red; font-weight: bold; margin-top: 10px;">
+    {{ $erro }}
+</div>
 
-<!-- IF de Erro caso não encontre o nome ou CPF -->
-@if (session()->has('erro'))
-    <script>
-        alert("{{ session()->pull('erro') }}");
-    </script>
-@endif
-
-
-
-@if (!is_null($pessoas)) {{-- Só exibe se houve pesquisa --}}
+@elseif (!is_null($pessoas)) {{-- Só exibe se houve pesquisa --}}
 @if (count($pessoas) > 0)
 <div>
     @foreach ($pessoas as $pessoa)
@@ -34,6 +29,7 @@
     @endforeach
 </div>
 @else
+
 <p>Nenhuma pessoa encontrada para: {{ request()->input('pesquisar') }}</p>
 @endif
 @endif

@@ -10,6 +10,7 @@ class HomeController extends Controller
     public function filtrar(Request $request)
     {
         $pessoas = null;
+        $erro = null; // Definimos a variável erro
 
         if ($request->isMethod('post') && $request->filled('pesquisar')) {
             $pesquisa = $request->input('pesquisar');
@@ -18,10 +19,10 @@ class HomeController extends Controller
                 ->get();
 
             if ($pessoas->isEmpty()) {
-                session()->flash('erro', "Nenhuma pessoa encontrada para: $pesquisa");
+                $erro = "Nenhuma pessoa encontrada para: $pesquisa"; // Atribuímos o erro sem usar session()
             }
         }
 
-        return view('home', compact('pessoas'));
+        return view('home', compact('pessoas', 'erro'));
     }
 }
