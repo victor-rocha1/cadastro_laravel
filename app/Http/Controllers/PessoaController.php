@@ -10,6 +10,7 @@ class PessoaController extends Controller
     public function cadastro(Request $request)
     {
         if ($request->isMethod('post')) {
+            // Validação dos dados
             $dadosPessoa = $request->validate([
                 'nome' => 'required|string|max:255',
                 'nome_social' => 'nullable|string|max:255',
@@ -21,6 +22,9 @@ class PessoaController extends Controller
             ]);
 
             session(['dados_pessoa' => $dadosPessoa]);
+
+            // salvar no banco
+            Pessoa::create($dadosPessoa);
 
             return redirect()->route('cadastroEnderecoForm');
         }
