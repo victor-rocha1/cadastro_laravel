@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::match(['get', 'post'], '/', [HomeController::class, 'pesquisar']) // Aceita post e get
+Route::match(['get', 'post'], '/', [HomeController::class, 'filtar']) // Aceita post e get
     ->name('home');
 
 
