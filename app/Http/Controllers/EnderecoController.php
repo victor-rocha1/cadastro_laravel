@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pessoa;
 use App\Models\Endereco;
-use Illuminate\Support\Facades\DB; // Adicionado para corrigir o erro
-use Illuminate\Support\Facades\Log; // Adicionando Log para capturar erros
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class EnderecoController extends Controller
 {
@@ -29,11 +29,12 @@ class EnderecoController extends Controller
             return redirect()->route('cadastroPage')->withErrors(['erro' => 'Por favor, preencha os dados pessoais primeiro.']);
         }
 
-        // lista de estados válidos
+        // Lista de estados válidos
         $estadosValidos = [
-            "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO",  "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
+            "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"
         ];
 
+        // Validação do formulário
         $validatedEndereco = $request->validate([
             'cep' => 'required|string',
             'logradouro' => 'required|string',
@@ -48,15 +49,25 @@ class EnderecoController extends Controller
             'cidade' => 'required|string',
         ]);
 
+        // Remover a formatação do CEP e do número
+        $validatedEndereco['cep'] = preg_replace('/\D/', '', $validatedEndereco['cep']); // Remove qualquer caractere não numérico
+        $validatedEndereco['numero'] = preg_replace('/\D/', '', $validatedEndereco['numero']); // Remove qualquer caractere não numérico
+
         try {
             DB::beginTransaction();
 
+            // Criação do registro da pessoa
             $pessoa = Pessoa::create($dadosPessoa);
+
+            // Atribuindo o id da pessoa no endereço
             $validatedEndereco['id_pessoa'] = $pessoa->id;
+
+            // Criação do registro de endereço
             Endereco::create($validatedEndereco);
 
             DB::commit();
 
+            // Limpar os dados da sessão
             session()->forget('dados_pessoa');
 
             return redirect()->route('home')->with('success', 'Cadastro finalizado com sucesso!');

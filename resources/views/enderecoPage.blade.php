@@ -12,13 +12,13 @@
     <input type="hidden" name="id_pessoa" value="{{ $id_pessoa ?? '' }}">
 
     <label for="cep">CEP:</label><br>
-    <input type="text" name="cep" id="cep" required><br>
+    <input type="text" name="cep" id="cep" required maxlength="10" placeholder="00000-000"><br>
 
     <label for="logradouro">Logradouro:</label><br>
     <input type="text" name="logradouro" id="logradouro" required><br>
 
     <label for="numero">Número:</label><br>
-    <input type="text" name="numero" id="numero" required><br>
+    <input type="text" name="numero" id="numero" required maxlength="15" placeholder="(00) 00000-0000"><br>
 
     <label for="complemento">Complemento:</label><br>
     <input type="text" name="complemento" id="complemento"><br>
@@ -56,8 +56,7 @@
         <option value="SP">São Paulo</option>
         <option value="SE">Sergipe</option>
         <option value="TO">Tocantins</option>
-    </select> <br>
-
+    </select><br>
 
     <label for="cidade">Cidade:</label><br>
     <input type="text" name="cidade" id="cidade" required><br>
@@ -75,4 +74,7 @@
 </div>
 @endif
 
+@endsection
+
+@section('scripts')
 @endsection

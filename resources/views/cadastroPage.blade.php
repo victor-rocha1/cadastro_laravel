@@ -15,7 +15,7 @@
     <input type="text" name="nome_social" placeholder="Nome Social"><br>
 
     <label for="cpf">CPF:</label><br>
-    <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" required><br>
+    <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" required oninput="formatarCPF(event)"><br>
 
     <label for="nome_pai">Nome do Pai:</label><br>
     <input type="text" name="nome_pai" placeholder="Nome do Pai"><br>
@@ -31,21 +31,4 @@
 
     <button type="submit">Próximo</button>
 </form>
-
-<script>
-    // Função para formatar CPF
-    document.getElementById('cpf').addEventListener('input', function(event) {
-        var cpf = event.target.value;
-
-        // remove todos os caracteres não numéricos
-        cpf = cpf.replace(/\D/g, '');
-
-        // formata CPF com pontos e traço
-        if (cpf.length <= 11) {
-            cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
-        }
-
-        event.target.value = cpf;
-    });
-</script>
 @endsection
