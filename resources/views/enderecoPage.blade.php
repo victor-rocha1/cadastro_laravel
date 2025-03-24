@@ -6,9 +6,9 @@
 
 @section('content')
 <div class="container mt-4">
-
-    <div class="d-flex justify-content-center">
+    <div class="row justify-content-center">
         <div class="col-md-6">
+
             <form method="POST" action="{{ route('cadastroEndereco') }}">
                 @csrf
 
@@ -16,7 +16,7 @@
 
                 <div class="mb-3">
                     <label for="cep" class="form-label">CEP:</label>
-                    <input type="text" name="cep" id="cep" class="form-control" required maxlength="10" placeholder="00000-000">
+                    <input type="text" name="cep" id="cep" class="form-control" required maxlength="10" placeholder="00000-000" onblur="consultarCEP()">
                 </div>
 
                 <div class="mb-3">
@@ -93,4 +93,35 @@
         </div>
     </div>
 </div>
+
+<script>
+    function consultarCEP() {
+        var cep = document.getElementById('cep').value.replace(/\D/g, ''); 
+
+        if (cep.length === 8) {
+            var url = `https://viacep.com.br/ws/${cep}/json/`; // URL da API viaCEP
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.erro) {
+                        // preenche os campos do formulário com os dados retornados
+                        document.getElementById('logradouro').value = data.logradouro;
+                        document.getElementById('bairro').value = data.bairro;
+                        document.getElementById('cidade').value = data.localidade;
+                        document.getElementById('estado').value = data.uf;
+                    } else {
+                        alert('CEP não encontrado.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao consultar o CEP:', error);
+                    alert('Erro ao consultar o CEP.');
+                });
+        } else {
+            alert('CEP inválido.');
+        }
+    }
+</script>
+
 @endsection

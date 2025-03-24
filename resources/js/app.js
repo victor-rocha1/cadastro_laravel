@@ -1,1 +1,3 @@
+import './cep'; 
+
 require('./bootstrap');

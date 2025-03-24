@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::match(['get', 'post'], '/', [HomeController::class, 'filtrar']) 
+Route::match(['get', 'post'], '/', [HomeController::class, 'filtrar'])
     ->name('home');
 
 // Rota de Admin - editar e deletar 
