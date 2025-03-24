@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PessoaController;
@@ -15,9 +16,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::match(['get', 'post'], '/', [HomeController::class, 'filtrar']) // Aceita post e get
+Route::match(['get', 'post'], '/', [HomeController::class, 'filtrar']) 
     ->name('home');
 
+// Rota de Admin - editar e deletar 
+Route::match(['get', 'post'], '/admin', [AdminController::class, 'listar'])
+    ->name('admin');
 
 // Rota para exibir o formulário de cadastro de pessoa
 Route::get('/cadastro', [PessoaController::class, 'cadastro'])
@@ -25,8 +29,7 @@ Route::get('/cadastro', [PessoaController::class, 'cadastro'])
 
 // Rota para processar o envio do formulário de cadastro de pessoa
 Route::post('/cadastro', [PessoaController::class, 'cadastro'])
-    ->name('cadastroPage');;
-
+    ->name('cadastroPage');
 
 // Rota GET para exibir o formulário de cadastro de endereço
 Route::get('/cadastro-endereco', [EnderecoController::class, 'formEndereco'])

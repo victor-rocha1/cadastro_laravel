@@ -10,16 +10,23 @@ class HomeController extends Controller
     public function filtrar(Request $request)
     {
         $pessoas = null;
-        $erro = null; // Definimos a variável erro
+        $erro = null;
 
-        if ($request->isMethod('post') && $request->filled('pesquisar')) {
+        // verifica qual ação foi acionada
+        $acao = $request->input('acao');
+
+        if ($acao === 'listar') {
+            return redirect()->route('admin');
+
+        } elseif ($acao === 'pesquisar' && $request->filled('pesquisar')) {
+            // Filtrar por nome ou CPF
             $pesquisa = $request->input('pesquisar');
             $pessoas = Pessoa::where('nome', 'LIKE', "%$pesquisa%")
                 ->orWhere('cpf', 'LIKE', "%$pesquisa%")
                 ->get();
 
             if ($pessoas->isEmpty()) {
-                $erro = "Nenhuma pessoa encontrada para: $pesquisa"; // Atribuímos o erro sem usar session()
+                $erro = "Nenhuma pessoa encontrada para: $pesquisa";
             }
         }
 
