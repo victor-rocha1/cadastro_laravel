@@ -18,7 +18,7 @@
     <input type="text" name="logradouro" id="logradouro" required><br>
 
     <label for="numero">Número:</label><br>
-    <input type="text" name="numero" id="numero" required maxlength="15" placeholder="(00) 00000-0000"><br>
+    <input type="text" name="numero" id="numero" required maxlength="4" placeholder="00"><br>
 
     <label for="complemento">Complemento:</label><br>
     <input type="text" name="complemento" id="complemento"><br>

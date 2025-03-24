@@ -15,7 +15,7 @@
     <input type="text" name="nome_social" placeholder="Nome Social"><br>
 
     <label for="cpf">CPF:</label><br>
-    <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" required oninput="formatarCPF(event)"><br>
+    <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" required oninput="formatarCPF(event)" maxlength="14"><br>
 
     <label for="nome_pai">Nome do Pai:</label><br>
     <input type="text" name="nome_pai" placeholder="Nome do Pai"><br>

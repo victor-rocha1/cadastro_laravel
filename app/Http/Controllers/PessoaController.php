@@ -23,9 +23,6 @@ class PessoaController extends Controller
 
             session(['dados_pessoa' => $dadosPessoa]);
 
-            // salvar no banco
-            Pessoa::create($dadosPessoa);
-
             return redirect()->route('cadastroEnderecoForm');
         }
 
