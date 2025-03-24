@@ -5,30 +5,51 @@
 @section('header', 'Cadastrar Usuário')
 
 @section('content')
-<form method="POST" action="{{ route('cadastroPage') }}">
-    @csrf
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Remover o título duplicado -->
+            <form method="POST" action="{{ route('cadastroPage') }}">
+                @csrf
 
-    <label for="nome">Nome:</label><br>
-    <input type="text" name="nome" placeholder="Nome" required><br>
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome:</label>
+                    <input type="text" class="form-control" name="nome" placeholder="Nome" required>
+                </div>
 
-    <label for="nome_social">Nome Social (opcional):</label><br>
-    <input type="text" name="nome_social" placeholder="Nome Social"><br>
+                <div class="mb-3">
+                    <label for="nome_social" class="form-label">Nome Social (opcional):</label>
+                    <input type="text" class="form-control" name="nome_social" placeholder="Nome Social">
+                </div>
 
-    <label for="cpf">CPF:</label><br>
-    <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" required oninput="formatarCPF(event)" maxlength="14"><br>
+                <div class="mb-3">
+                    <label for="cpf" class="form-label">CPF:</label>
+                    <input type="text" class="form-control" name="cpf" id="cpf" placeholder="000.000.000-00" required oninput="formatarCPF(event)" maxlength="14">
+                </div>
 
-    <label for="nome_pai">Nome do Pai:</label><br>
-    <input type="text" name="nome_pai" placeholder="Nome do Pai"><br>
+                <div class="mb-3">
+                    <label for="nome_pai" class="form-label">Nome do Pai:</label>
+                    <input type="text" class="form-control" name="nome_pai" placeholder="Nome do Pai">
+                </div>
 
-    <label for="nome_mae">Nome da Mãe:</label><br>
-    <input type="text" name="nome_mae" placeholder="Nome da Mãe"><br>
+                <div class="mb-3">
+                    <label for="nome_mae" class="form-label">Nome da Mãe:</label>
+                    <input type="text" class="form-control" name="nome_mae" placeholder="Nome da Mãe">
+                </div>
 
-    <label for="telefone">Telefone:</label><br>
-    <input type="tel" name="telefone" placeholder="(31) 99999-9999"><br>
+                <div class="mb-3">
+                    <label for="telefone" class="form-label">Telefone:</label>
+                    <input type="tel" class="form-control" name="telefone" placeholder="(31) 99999-9999">
+                </div>
 
-    <label for="email">E-mail:</label><br>
-    <input type="email" name="email" placeholder="pessoa@gmail.com"><br>
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail:</label>
+                    <input type="email" class="form-control" name="email" placeholder="pessoa@gmail.com">
+                </div>
 
-    <button type="submit">Próximo</button>
-</form>
+                <button type="submit" class="mb-3 btn btn-success">Próximo</button><br>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

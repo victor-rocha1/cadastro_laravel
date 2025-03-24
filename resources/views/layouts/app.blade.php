@@ -5,17 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <!-- Link para o Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 
-<body>
-    <h1>@yield('header')</h1>
+<body class="container mt-4 center">
+    <!-- Cabeçalho -->
+    <h1 class="text-center mt-4">@yield('header')</h1>
 
-
+    <!-- Conteúdo -->
     @yield('content')
 
+    <!-- Exibição de erros -->
     @if ($errors->any())
-    <div style="color: red;">
+    <div class="alert alert-danger mt-4">
         <ul>
             @foreach ($errors->all() as $error)
             <li>{{ $error }}</li>
@@ -24,6 +29,7 @@
     </div>
     @endif
 
+    <!-- Scripts -->
     <script>
         // Função para formatar CPF no campo de pesquisa
         function formatarCPF(event) {
@@ -41,19 +47,16 @@
         }
     </script>
 
-
     <script>
-        // Script para formatar o número no formato (00) 00000-0000
+        // Formatação para número de telefone
         document.addEventListener('DOMContentLoaded', function() {
             var inputNumero = document.getElementById('numero');
 
             inputNumero.addEventListener('input', function(event) {
                 var valor = event.target.value;
 
-                // Remove todos os caracteres não numéricos
                 valor = valor.replace(/\D/g, '');
 
-                // Formata o número no padrão (00) 00000-0000
                 if (valor.length <= 2) {
                     event.target.value = '(' + valor;
                 } else if (valor.length <= 6) {
@@ -63,16 +66,14 @@
                 }
             });
 
-            // Script para formatar o CEP no formato 00000-000
+            // Formatação para o CEP
             var inputCep = document.getElementById('cep');
 
             inputCep.addEventListener('input', function(event) {
                 var valorCep = event.target.value;
 
-                // Remove todos os caracteres não numéricos
                 valorCep = valorCep.replace(/\D/g, '');
 
-                // Formata o CEP no padrão 00000-000
                 if (valorCep.length <= 5) {
                     event.target.value = valorCep;
                 } else {
@@ -81,6 +82,9 @@
             });
         });
     </script>
+
+    <!-- Incluindo o script do Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

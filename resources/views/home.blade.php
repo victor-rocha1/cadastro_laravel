@@ -5,51 +5,54 @@
 @section('header', 'Sistema de Cadastro')
 
 @section('content')
-<form method="POST" action="{{ route('home') }}">
-    @csrf
-    <input type="hidden" name="acao" id="acao" value="">
+<div class="container mt-4">
+    <h2 class="mb-4">Pesquisar Cadastro</h2>
 
-    <div class="consulta">
-        <button type="submit" class="btn" 
-                onclick="document.getElementById('acao').value='listar';">
-            Listar todos os cadastros
-        </button>
+    <form method="POST" action="{{ route('home') }}">
+        @csrf
+        <input type="hidden" name="acao" id="acao" value="">
 
-        <button type="submit" class="btn" style="background-color: green; color: white;" 
-                onclick="document.getElementById('acao').value='alterar';">
-            Alterar Dados
-        </button>
-    </div>
+        <div class="d-flex mb-4">
+            <button type="submit" class="btn btn-primary me-2" onclick="document.getElementById('acao').value='listar';">
+                Listar todos os cadastros
+            </button>
 
-    <label for="pesquisar">Pesquisar por nome ou CPF:</label><br>
-    <input type="text" id="pesquisar" name="pesquisar" placeholder="Digite o nome ou CPF" oninput="formatarCPF(event)"> <br>
-    
-    <button type="submit" style="background-color: green; color: white;"
-            onclick="document.getElementById('acao').value='pesquisar';">
-        Pesquisar
-    </button>
-</form>
-
-@if (isset($erro))
-    <div style="color: red; font-weight: bold; margin-top: 10px;">
-        {{ $erro }}
-    </div>
-@elseif (!is_null($pessoas)) {{-- Só exibe se houve pesquisa --}}
-    @if (count($pessoas) > 0)
-        <div>
-            @foreach ($pessoas as $pessoa)
-                <div class="resultado">
-                    <h2>{{ $pessoa->nome }}</h2>
-                    <p><strong>E-mail:</strong> {{ $pessoa->email }}</p>
-                </div>
-                <div class="linha-separadora"></div>
-            @endforeach
+            <button type="submit" class="btn btn-success" onclick="document.getElementById('acao').value='alterar';">
+                Alterar Dados
+            </button>
         </div>
-    @else
-        <p>Nenhuma pessoa encontrada para: {{ request()->input('pesquisar') }}</p>
+
+        <div class="mb-3">
+            <label for="pesquisar" class="form-label">Pesquisar por nome ou CPF:</label>
+            <input type="text" id="pesquisar" name="pesquisar" class="form-control" placeholder="Digite o nome ou CPF" oninput="formatarCPF(event)">
+        </div>
+
+        <button type="submit" class="btn btn-success w-100" onclick="document.getElementById('acao').value='pesquisar';">
+            Pesquisar
+        </button>
+    </form>
+
+    @if (isset($erro))
+        <div class="alert alert-danger mt-4">
+            {{ $erro }}
+        </div>
+    @elseif (!is_null($pessoas))
+        @if (count($pessoas) > 0)
+            <div class="mt-4">
+                @foreach ($pessoas as $pessoa)
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $pessoa->nome }}</h5>
+                            <p class="card-text"><strong>E-mail:</strong> {{ $pessoa->email }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p>Nenhuma pessoa encontrada para: {{ request()->input('pesquisar') }}</p>
+        @endif
     @endif
-@endif
 
-<a href="{{ route('cadastroPage') }}">Realizar Novo Cadastro</a>
-
+    <a href="{{ route('cadastroPage') }}" class="btn btn-link">Realizar Novo Cadastro</a>
+</div>
 @endsection
