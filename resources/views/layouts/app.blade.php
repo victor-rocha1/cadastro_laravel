@@ -83,6 +83,36 @@
         });
     </script>
 
+    <script>
+        function consultarCEP() {
+            var cep = document.getElementById('cep').value.replace(/\D/g, '');
+
+            if (cep.length === 8) {
+                var url = `https://viacep.com.br/ws/${cep}/json/`; // URL da API viaCEP
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.erro) {
+                            // preenche os campos do formulário com os dados retornados
+                            document.getElementById('logradouro').value = data.logradouro;
+                            document.getElementById('bairro').value = data.bairro;
+                            document.getElementById('cidade').value = data.localidade;
+                            document.getElementById('estado').value = data.uf;
+                        } else {
+                            alert('CEP não encontrado.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao consultar o CEP:', error);
+                        alert('Erro ao consultar o CEP.');
+                    });
+            } else {
+                alert('CEP inválido.');
+            }
+        }
+    </script>
+
     <!-- Incluindo o script do Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
