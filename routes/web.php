@@ -21,9 +21,17 @@ Route::match(['get', 'post'], '/', [HomeController::class, 'filtrar'])
 
 //  admin
 Route::prefix('admin')->group(function () {
+    // Rota para listar as pessoas
     Route::match(['get', 'post'], '/', [AdminController::class, 'listar'])
         ->name('admin');
 
+    // Rota para editar uma pessoa
+    Route::get('/edit/{id}', [AdminController::class, 'edit'])
+        ->name('admin.edit');
+
+    // Rota para atualizar os dados de uma pessoa
+    Route::put('/update/{id}', [AdminController::class, 'update'])
+        ->name('update');
 });
 
 // grupo de rotas para Cadastro

@@ -50,12 +50,12 @@
     <script>
         // Formatação para número de telefone
         document.addEventListener('DOMContentLoaded', function() {
-            var inputNumero = document.getElementById('numero');
+            var inputTelefone = document.getElementById('telefone'); // Corrigir para telefone
 
-            inputNumero.addEventListener('input', function(event) {
+            inputTelefone.addEventListener('input', function(event) {
                 var valor = event.target.value;
 
-                valor = valor.replace(/\D/g, '');
+                valor = valor.replace(/\D/g, ''); // Remove tudo que não for número
 
                 if (valor.length <= 2) {
                     event.target.value = '(' + valor;
@@ -68,11 +68,10 @@
 
             // Formatação para o CEP
             var inputCep = document.getElementById('cep');
-
             inputCep.addEventListener('input', function(event) {
                 var valorCep = event.target.value;
 
-                valorCep = valorCep.replace(/\D/g, '');
+                valorCep = valorCep.replace(/\D/g, ''); // Remove tudo que não for número
 
                 if (valorCep.length <= 5) {
                     event.target.value = valorCep;
@@ -82,6 +81,15 @@
             });
         });
     </script>
+
+    <script>
+        // Função para garantir que apenas números sejam inseridos no campo 'numero'
+        function somenteNumeros(event) {
+            let input = event.target;
+            input.value = input.value.replace(/\D/g, ''); // Remove tudo que não for número
+        }
+    </script>
+
 
     <script>
         function consultarCEP() {
@@ -113,7 +121,7 @@
         }
     </script>
 
-    <!-- Incluindo o script do Bootstrap -->
+    <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
