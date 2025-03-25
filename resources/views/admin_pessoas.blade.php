@@ -7,37 +7,43 @@
 @section('content')
 
 @if (!empty($erro))
-    <p style="color: red;">{{ $erro }}</p>
+<p style="color: red;">{{ $erro }}</p>
 @else
-    @if($pessoas->isEmpty())
-        <p>Nenhuma pessoa cadastrada.</p>
-    @else
-        <div class="row">
-            @foreach ($pessoas as $pessoa)
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">{{ $pessoa->nome }}</h5>
-                            <div class="d-flex">
-                                <!-- Botão de editar (sem lógica de edição ainda) -->
-                                <button class="btn btn-warning btn-sm mr-2">
-                                    <i class="fa fa-edit"></i> Editar
-                                </button>
-                                <!-- Botão de excluir (sem lógica de exclusão ainda) -->
-                                <button class="btn btn-danger btn-sm">
-                                    <i class="fa fa-trash"></i> Excluir
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <p><strong>Email:</strong> {{ $pessoa->email }}</p>
-                            <p><strong>CPF:</strong> {{ $pessoa->cpf }}</p>
-                        </div>
-                    </div>
+@if($pessoas->isEmpty())
+<p>Nenhuma pessoa cadastrada.</p>
+@else
+<div class="row">
+    @foreach ($pessoas as $pessoa)
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">{{ $pessoa->nome }}</h5>
+                <div class="d-flex">
+                    <!-- Botão de editar -->
+                    <a href="{{ route('admin.edit', $pessoa->id) }}" class="btn btn-warning btn-sm mr-2">
+                        <i class="fa fa-edit"></i> Editar
+                    </a>
+
+                    <!-- Botão de excluir com confirmação -->
+                    <form action="" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir esta pessoa?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i> Excluir
+                        </button>
+                    </form>
                 </div>
-            @endforeach
+
+            </div>
+            <div class="card-body">
+                <p><strong>Email:</strong> {{ $pessoa->email }}</p>
+                <p><strong>CPF:</strong> {{ $pessoa->cpf }}</p>
+            </div>
         </div>
-    @endif
+    </div>
+    @endforeach
+</div>
+@endif
 @endif
 
 <a href="{{ route('home') }}" class="btn btn-secondary mt-3">Voltar para a Página Inicial</a>
@@ -45,6 +51,6 @@
 @endsection
 
 @section('styles')
-    <!-- link dos ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<!-- link dos ícones -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 @endsection

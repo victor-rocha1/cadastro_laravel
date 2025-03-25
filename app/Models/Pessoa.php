@@ -9,15 +9,21 @@ class Pessoa extends Model
 {
     use HasFactory;
 
-    protected $table = 'pessoas'; 
+    protected $table = 'pessoas';
 
     protected $fillable = [
-        'nome', 
-        'nome_social', 
-        'cpf', 
-        'nome_pai', 
-        'nome_mae', 
+        'nome',
+        'nome_social',
+        'cpf',
+        'nome_pai',
+        'nome_mae',
         'telefone',
-        'email', 
+        'email',
     ];
+
+    // Relacionamento de 1 para 1 com Endereco
+    public function endereco()
+    {
+        return $this->hasOne(Endereco::class, 'id_pessoa');
+    }
 }

@@ -9,10 +9,10 @@ class Endereco extends Model
 {
     use HasFactory;
 
-    protected $table = 'enderecos'; 
+    protected $table = 'enderecos';
 
     protected $fillable = [
-        'id_pessoa', 
+        'id_pessoa',
         'cep',
         'logradouro',
         'numero',
@@ -21,4 +21,10 @@ class Endereco extends Model
         'estado',
         'cidade',
     ];
+
+    // Relacionamento com Pessoa
+    public function pessoa()
+    {
+        return $this->belongsTo(Pessoa::class, 'id_pessoa');
+    }
 }

@@ -18,4 +18,61 @@ class AdminController extends Controller
 
         return view('admin_pessoas', compact('pessoas', 'erro'));
     }
+
+    public function edit($id)
+    {
+        // Carregar a pessoa com o endereço
+        $dados = Pessoa::with('endereco')->find($id);
+
+        if ($dados) {
+            return view('edit', compact('dados'));
+        } else {
+            return redirect()->route('admin')->with('erro', 'Pessoa não encontrada.');
+        }
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        // Validar os dados
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'cpf' => 'required|cpf',
+            'email' => 'required|email',
+            // Adicione validações para outros campos conforme necessário
+        ]);
+
+        // Encontrar a pessoa
+        $pessoa = Pessoa::find($id);
+
+        if ($pessoa) {
+            // Atualizar dados da pessoa
+            $pessoa->update([
+                'nome' => $request->nome,
+                'nome_social' => $request->nome_social,
+                'cpf' => $request->cpf,
+                'nome_pai' => $request->nome_pai,
+                'nome_mae' => $request->nome_mae,
+                'telefone' => $request->telefone,
+                'email' => $request->email,
+            ]);
+
+            // Atualizar o endereço (se houver)
+            if ($pessoa->endereco) {
+                $pessoa->endereco->update([
+                    'cep' => $request->cep,
+                    'logradouro' => $request->logradouro,
+                    'numero' => $request->numero,
+                    'complemento' => $request->complemento,
+                    'bairro' => $request->bairro,
+                    'estado' => $request->estado,
+                    'cidade' => $request->cidade,
+                ]);
+            }
+
+            return redirect()->route('admin')->with('sucesso', 'Cadastro atualizado com sucesso.');
+        } else {
+            return redirect()->route('admin')->with('erro', 'Pessoa não encontrada.');
+        }
+    }
 }
