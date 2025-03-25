@@ -19,22 +19,31 @@ use Illuminate\Support\Facades\Route;
 Route::match(['get', 'post'], '/', [HomeController::class, 'filtrar'])
     ->name('home');
 
-// Rota de Admin - editar e deletar 
-Route::match(['get', 'post'], '/admin', [AdminController::class, 'listar'])
-    ->name('admin');
+//  admin
+Route::prefix('admin')->group(function () {
+    Route::match(['get', 'post'], '/', [AdminController::class, 'listar'])
+        ->name('admin');
 
-// Rota para exibir o formulário de cadastro de pessoa
-Route::get('/cadastro', [PessoaController::class, 'cadastro'])
-    ->name('cadastroPage');
+});
 
-// Rota para processar o envio do formulário de cadastro de pessoa
-Route::post('/cadastro', [PessoaController::class, 'cadastro'])
-    ->name('cadastroPage');
+// grupo de rotas para Cadastro
+Route::prefix('cadastro')->group(function () {
+    // exibir o formulário de cadastro de pessoa
+    Route::get('/', [PessoaController::class, 'cadastro'])
+        ->name('cadastroPage');
 
-// Rota GET para exibir o formulário de cadastro de endereço
-Route::get('/cadastro-endereco', [EnderecoController::class, 'formEndereco'])
-    ->name('cadastroEnderecoForm');
+    // processar o envio do formulário de cadastro de pessoa
+    Route::post('/', [PessoaController::class, 'cadastro'])
+        ->name('cadastroPage');
 
-// Rota POST para processar o envio do formulário de cadastro de endereço
-Route::post('/cadastro-endereco', [EnderecoController::class, 'cadastrarEndereco'])
-    ->name('cadastroEndereco');
+    //  endereço dentro de Cadastro
+    Route::prefix('endereco')->group(function () {
+        // Rota GET para exibir o formulário de cadastro de endereço
+        Route::get('/', [EnderecoController::class, 'formEndereco'])
+            ->name('cadastroEnderecoForm');
+
+        // Rota POST para processar o envio do formulário de cadastro de endereço
+        Route::post('/', [EnderecoController::class, 'cadastrarEndereco'])
+            ->name('cadastroEndereco');
+    });
+});
