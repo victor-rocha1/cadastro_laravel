@@ -97,7 +97,7 @@
     </div>
 
     <!-- Botão único para salvar -->
-    <button type="submit" class="btn btn-success w-100">Salvar Dados</button>
+    <button type="submit" class="mb-3 btn btn-success w-100">Salvar Dados</button>
 </form>
 
 @endsection

@@ -31,19 +31,27 @@
 
     <!-- Scripts -->
     <script>
-        // Função para formatar CPF no campo de pesquisa
         function formatarCPF(event) {
-            var cpf = event.target.value;
+            let input = event.target;
+            let cpf = input.value;
 
-            // Remove todos os caracteres não numéricos
+            
+            if (cpf.match(/[a-zA-Z]/)) {
+                return;
+            }
+            
             cpf = cpf.replace(/\D/g, '');
 
             // Formata CPF com pontos e traço
-            if (cpf.length <= 11) {
+            if (cpf.length > 3 && cpf.length <= 6) {
+                cpf = cpf.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+            } else if (cpf.length > 6 && cpf.length <= 9) {
+                cpf = cpf.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+            } else if (cpf.length > 9) {
                 cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
             }
 
-            event.target.value = cpf;
+            input.value = cpf;
         }
     </script>
 

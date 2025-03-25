@@ -31,15 +31,13 @@ class AdminController extends Controller
         }
     }
 
-
     public function update(Request $request, $id)
     {
         // Validar os dados
         $request->validate([
             'nome' => 'required|string|max:255',
-            'cpf' => 'required|cpf',
+            'cpf' => 'nullable|string',
             'email' => 'required|email',
-            // Adicione validações para outros campos conforme necessário
         ]);
 
         // Encontrar a pessoa
@@ -49,24 +47,24 @@ class AdminController extends Controller
             // Atualizar dados da pessoa
             $pessoa->update([
                 'nome' => $request->nome,
-                'nome_social' => $request->nome_social,
-                'cpf' => $request->cpf,
-                'nome_pai' => $request->nome_pai,
-                'nome_mae' => $request->nome_mae,
-                'telefone' => $request->telefone,
+                'nome_social' => $request->nome_social ?? '',
+                'cpf' => $request->cpf ?? '',
+                'nome_pai' => $request->nome_pai ?? '',
+                'nome_mae' => $request->nome_mae ?? '',
+                'telefone' => $request->telefone ?? '',
                 'email' => $request->email,
             ]);
 
-            // Atualizar o endereço (se houver)
+            // Atualizar o endereço 
             if ($pessoa->endereco) {
                 $pessoa->endereco->update([
-                    'cep' => $request->cep,
-                    'logradouro' => $request->logradouro,
-                    'numero' => $request->numero,
-                    'complemento' => $request->complemento,
-                    'bairro' => $request->bairro,
-                    'estado' => $request->estado,
-                    'cidade' => $request->cidade,
+                    'cep' => $request->cep ?? '',
+                    'logradouro' => $request->logradouro ?? '',
+                    'numero' => $request->numero ?? '',
+                    'complemento' => $request->complemento ?? '',
+                    'bairro' => $request->bairro ?? '',
+                    'estado' => $request->estado ?? '',
+                    'cidade' => $request->cidade ?? '',
                 ]);
             }
 
