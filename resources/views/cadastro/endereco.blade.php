@@ -9,7 +9,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
 
-            <form method="POST" action="{{ route('cadastroEndereco') }}">
+            <form method="POST" action="{{ route('cadastro.endereco') }}">
                 @csrf
 
                 <input type="hidden" name="id_pessoa" value="{{ $id_pessoa ?? '' }}">

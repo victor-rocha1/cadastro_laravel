@@ -12,14 +12,11 @@ class HomeController extends Controller
         $pessoas = null;
         $erro = null;
 
-        // verifica qual ação foi acionada
         $acao = $request->input('acao');
 
         if ($acao === 'listar') {
-            return redirect()->route('admin');
-
+            return redirect()->route('admin.listar');
         } elseif ($acao === 'pesquisar' && $request->filled('pesquisar')) {
-            // Filtrar por nome ou CPF
             $pesquisa = $request->input('pesquisar');
             $pessoas = Pessoa::where('nome', 'LIKE', "%$pesquisa%")
                 ->orWhere('cpf', 'LIKE', "%$pesquisa%")

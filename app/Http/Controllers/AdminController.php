@@ -9,68 +9,46 @@ class AdminController extends Controller
 {
     public function listar()
     {
-        $pessoas = Pessoa::all();
-        $erro = null;
+        $pessoas = Pessoa::with('endereco')->get();
+        $erro = $pessoas->isEmpty() ? "Nenhuma pessoa cadastrada." : null;
 
-        if ($pessoas->isEmpty()) {
-            $erro = "Nenhuma pessoa cadastrada.";
-        }
-
-        return view('admin_pessoas', compact('pessoas', 'erro'));
+        return view('admin.listar', compact('pessoas', 'erro'));
     }
 
     public function edit($id)
     {
-        // Carregar a pessoa com o endereço
         $dados = Pessoa::with('endereco')->find($id);
 
         if ($dados) {
-            return view('edit', compact('dados'));
-        } else {
-            return redirect()->route('admin')->with('erro', 'Pessoa não encontrada.');
+            return view('admin.edit', compact('dados')); 
         }
+
+        return redirect()->route('admin.listar')->with('erro', 'Pessoa não encontrada.');
     }
 
     public function update(Request $request, $id)
     {
-        // Validar os dados
         $request->validate([
             'nome' => 'required|string|max:255',
             'cpf' => 'nullable|string',
             'email' => 'required|email',
         ]);
 
-        // Encontrar a pessoa
         $pessoa = Pessoa::find($id);
 
         if ($pessoa) {
-            // Atualizar dados da pessoa
-            $pessoa->update([
-                'nome' => $request->nome,
-                'nome_social' => $request->nome_social ?? '',
-                'cpf' => $request->cpf ?? '',
-                'nome_pai' => $request->nome_pai ?? '',
-                'nome_mae' => $request->nome_mae ?? '',
-                'telefone' => $request->telefone ?? '',
-                'email' => $request->email,
-            ]);
+            $pessoa->update($request->only(['nome', 'nome_social', 'cpf', 'nome_pai', 'nome_mae', 'telefone', 'email']));
 
-            // Atualizar o endereço 
+            // se a pessoa tiver um endereço, atualiza; se não, cria um novo
             if ($pessoa->endereco) {
-                $pessoa->endereco->update([
-                    'cep' => $request->cep ?? '',
-                    'logradouro' => $request->logradouro ?? '',
-                    'numero' => $request->numero ?? '',
-                    'complemento' => $request->complemento ?? '',
-                    'bairro' => $request->bairro ?? '',
-                    'estado' => $request->estado ?? '',
-                    'cidade' => $request->cidade ?? '',
-                ]);
+                $pessoa->endereco->update($request->only(['cep', 'logradouro', 'numero', 'complemento', 'bairro', 'estado', 'cidade']));
+            } else {
+                $pessoa->endereco()->create($request->only(['cep', 'logradouro', 'numero', 'complemento', 'bairro', 'estado', 'cidade']));
             }
 
-            return redirect()->route('admin')->with('sucesso', 'Cadastro atualizado com sucesso.');
-        } else {
-            return redirect()->route('admin')->with('erro', 'Pessoa não encontrada.');
+            return redirect()->route('admin.listar')->with('sucesso', 'Cadastro atualizado com sucesso.');
         }
+
+        return redirect()->route('admin')->with('erro', 'Pessoa não encontrada.');
     }
 }

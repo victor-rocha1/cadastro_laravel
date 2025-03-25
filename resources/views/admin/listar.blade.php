@@ -20,9 +20,10 @@
                 <h5 class="card-title mb-0">{{ $pessoa->nome }}</h5>
                 <div class="d-flex">
                     <!-- Botão de editar -->
-                    <a href="{{ route('admin.edit', $pessoa->id) }}" class="btn btn-warning btn-sm mr-2">
+                    <a href="{{ route('admin.edit', ['id' => $pessoa->id]) }}" class="btn btn-warning btn-sm mr-2">
                         <i class="fa fa-edit"></i> Editar
                     </a>
+
 
                     <!-- Botão de excluir com confirmação -->
                     <form action="" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir esta pessoa?');">

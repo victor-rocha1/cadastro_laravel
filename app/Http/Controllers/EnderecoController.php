@@ -15,10 +15,11 @@ class EnderecoController extends Controller
         $dadosPessoa = session('dados_pessoa', []);
 
         if (empty($dadosPessoa)) {
-            return redirect()->route('cadastroPage')->withErrors(['erro' => 'Por favor, preencha os dados pessoais primeiro.']);
+            return redirect()->route('cadastro.pessoa')
+                ->withErrors(['erro' => 'Por favor, preencha os dados pessoais primeiro.']);
         }
 
-        return view('enderecoPage', compact('dadosPessoa'));
+        return view('cadastro.endereco', compact('dadosPessoa'));
     }
 
     public function cadastrarEndereco(Request $request)
@@ -26,39 +27,30 @@ class EnderecoController extends Controller
         $dadosPessoa = session('dados_pessoa');
 
         if (!$dadosPessoa) {
-            return redirect()->route('cadastroPage')->withErrors(['erro' => 'Por favor, preencha os dados pessoais primeiro.']);
+            return redirect()->route('cadastro.pessoa')
+                ->withErrors(['erro' => 'Por favor, preencha os dados pessoais primeiro.']);
         }
 
-        // Validação do formulário
+        // validação do formulário
         $validatedEndereco = $request->validate([
-            'cep' => 'required|string',
-            'logradouro' => 'required|string',
-            'numero' => 'required|string',
-            'complemento' => 'nullable|string',
-            'bairro' => 'required|string',
-            'estado' => 'required|string',
-            'cidade' => 'required|string',
+            'cep' => 'required|string|max:9',
+            'logradouro' => 'required|string|max:255',
+            'numero' => 'required|string|max:10',
+            'complemento' => 'nullable|string|max:255',
+            'bairro' => 'required|string|max:255',
+            'estado' => 'required|string|max:2',
+            'cidade' => 'required|string|max:255',
         ]);
-
-        // Remove a formatação do CEP e do número
-        $validatedEndereco['cep'] = preg_replace('/\D/', '', $validatedEndereco['cep']);
-        $validatedEndereco['numero'] = preg_replace('/\D/', '', $validatedEndereco['numero']);
 
         try {
             DB::beginTransaction();
 
-            // Criação do registro de pessoa
+            // Criação dos registros
             $pessoa = Pessoa::create($dadosPessoa);
-
-            // Atribuindo o id da pessoa no endereço
-            $validatedEndereco['id_pessoa'] = $pessoa->id;
-
-            // Criação do registro de endereço
-            Endereco::create($validatedEndereco);
+            $pessoa->endereco()->create($validatedEndereco);
 
             DB::commit();
 
-            // Limpa todos os dados das variáveis após salvar no banco
             session()->forget('dados_pessoa');
 
             return redirect()->route('home')->with('success', 'Cadastro finalizado com sucesso!');

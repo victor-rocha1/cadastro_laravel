@@ -50,6 +50,6 @@
     @endif
     @endif
 
-    <a href="{{ route('cadastroPage') }}" class="btn btn-link">Realizar Novo Cadastro</a>
+    <a href="{{ route('cadastro.pessoa') }}" class="btn btn-link">Realizar Novo Cadastro</a>
 </div>
 @endsection

@@ -10,7 +10,7 @@ class PessoaController extends Controller
     public function cadastro(Request $request)
     {
         if ($request->isMethod('post')) {
-            // Validação dos dados
+            // validação dos dados
             $dadosPessoa = $request->validate([
                 'nome' => 'required|string|max:255',
                 'nome_social' => 'nullable|string|max:255',
@@ -21,11 +21,12 @@ class PessoaController extends Controller
                 'email' => 'nullable|email|max:255|unique:pessoas,email',
             ]);
 
+            // armazena os dados na sessão
             session(['dados_pessoa' => $dadosPessoa]);
 
-            return redirect()->route('cadastroEnderecoForm');
+            return redirect()->route('cadastro.endereco.form');
         }
 
-        return view('cadastroPage');
+        return view('cadastro.pessoa');
     }
 }

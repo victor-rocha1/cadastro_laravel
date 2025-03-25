@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form method="POST" action="{{ route('cadastroPage') }}">
+            <form method="POST" action="{{ route('cadastro.pessoa') }}">
                 @csrf
 
                 <div class="mb-3">
