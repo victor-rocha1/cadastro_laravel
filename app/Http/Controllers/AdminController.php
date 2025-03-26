@@ -21,13 +21,19 @@ class AdminController extends Controller
         $dados = Pessoa::with('endereco')->find($id);
 
         if ($dados) {
+            // Se a pessoa estiver apagada, redireciona para a view de restauração
+            if ($dados->trashed()) {
+                return view('admin.restore', compact('dados'));
+            }
+
             return view('admin.edit', compact('dados'));
         }
 
         return redirect()->route('admin.listar')->with('erro', 'Pessoa não encontrada.');
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'nome' => 'required|string|max:255',
             'cpf' => 'nullable|string',
@@ -52,7 +58,8 @@ class AdminController extends Controller
         return redirect()->route('admin')->with('erro', 'Pessoa não encontrada.');
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         // Busca a pessoa no banco
         $pessoa = Pessoa::find($id);
 
@@ -60,5 +67,23 @@ class AdminController extends Controller
         $pessoa->delete();
 
         return redirect()->route('admin.listar')->with('sucesso', 'Pessoa excluída com sucesso.');
+    }
+
+    // Método para listar e restaurar uma pessoa apagada
+    public function restore(Request $request, $id = null)
+    {
+        // Se o ID foi fornecido, restaurar a pessoa específica
+        if ($id) {
+            $pessoa = Pessoa::onlyTrashed()->findOrFail($id);
+            $pessoa->restore();
+
+            return redirect()->route('admin.restore')->with('success', 'Pessoa restaurada com sucesso!');
+        }
+
+        // Se não houver ID, listar todas as pessoas excluídas
+        $pessoas = Pessoa::onlyTrashed()->get();
+        $erro = $pessoas->isEmpty() ? "Nenhuma pessoa excluída." : null;
+
+        return view('admin.restore', compact('pessoas', 'erro'));
     }
 }
