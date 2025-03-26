@@ -53,6 +53,6 @@ Route::prefix('admin')->group(function () {
         ->name('admin.update');
 
     // Rota para deletar uma pessoa
-    Route::delete('/delete/{id}', [AdminController::class, 'delete'])
-        ->name('admin.delete');
+    Route::delete('/destroy/{id}', [AdminController::class, 'destroy'])
+        ->name('admin.destroy');
 });

@@ -6,35 +6,33 @@
 
 @section('content')
 
-@if (!empty($erro))
-<p style="color: red;">{{ $erro }}</p>
+@if ($pessoas->isEmpty())
+<p class="text-danger">Nenhuma pessoa cadastrada.</p>
 @else
-@if($pessoas->isEmpty())
-<p>Nenhuma pessoa cadastrada.</p>
-@else
-<div class="row">
+
+
+<div class="row justify-content-center mt-5">
     @foreach ($pessoas as $pessoa)
     <div class="col-md-4 mb-4">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0">{{ $pessoa->nome }}</h5>
-                <div class="d-flex">
-                    <!-- Botão de editar -->
-                    <a href="{{ route('admin.edit', ['id' => $pessoa->id]) }}" class="btn btn-warning btn-sm mr-2">
-                        <i class="fa fa-edit"></i> Editar
+                <div class="d-flex gap-2">
+                    <!-- editar -->
+                    <a href="{{ route('admin.edit', $pessoa->id) }}" class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit"></i>
                     </a>
 
-
-                    <!-- Botão de excluir com confirmação -->
-                    <form action="" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir esta pessoa?');">
+                    <!-- deletar -->
+                    <form action="{{ route('admin.destroy', $pessoa->id) }}" method="POST"
+                        onsubmit="return confirm('Tem certeza que deseja excluir esta pessoa?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fa fa-trash"></i> Excluir
+                            <i class="fas fa-trash"></i>
                         </button>
                     </form>
                 </div>
-
             </div>
             <div class="card-body">
                 <p><strong>Email:</strong> {{ $pessoa->email }}</p>
@@ -45,13 +43,10 @@
     @endforeach
 </div>
 @endif
-@endif
 
-<a href="{{ route('home') }}" class="btn btn-secondary mt-3">Voltar para a Página Inicial</a>
+<a href="{{ route('home') }}" class="btn btn-secondary mt-3">
+    <i class="fas fa-arrow-left"></i> Voltar para a Página Inicial
+</a>
 
-@endsection
 
-@section('styles')
-<!-- link dos ícones -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 @endsection

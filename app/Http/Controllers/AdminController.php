@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pessoa;
 use Illuminate\Http\Request;
+use PDO;
 
 class AdminController extends Controller
 {
@@ -20,14 +21,13 @@ class AdminController extends Controller
         $dados = Pessoa::with('endereco')->find($id);
 
         if ($dados) {
-            return view('admin.edit', compact('dados')); 
+            return view('admin.edit', compact('dados'));
         }
 
         return redirect()->route('admin.listar')->with('erro', 'Pessoa não encontrada.');
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         $request->validate([
             'nome' => 'required|string|max:255',
             'cpf' => 'nullable|string',
@@ -50,5 +50,15 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin')->with('erro', 'Pessoa não encontrada.');
+    }
+
+    public function destroy($id){
+        // Busca a pessoa no banco
+        $pessoa = Pessoa::find($id);
+
+        // Exclui a pessoa
+        $pessoa->delete();
+
+        return redirect()->route('admin.listar')->with('sucesso', 'Pessoa excluída com sucesso.');
     }
 }
