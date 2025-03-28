@@ -33,7 +33,7 @@ Route::prefix('cadastro')->group(function () {
     });
 });
 
-// Grupo de rotas para Admini
+// Grupo de rotas para Admin
 Route::prefix('admin')->group(function () {
     // Rota para listar as pessoas (GET puro)
     Route::get('/listar', [AdminController::class, 'listar'])
@@ -54,4 +54,8 @@ Route::prefix('admin')->group(function () {
     // Rota para restore
     Route::get('/restore', [AdminController::class, 'restore'])->name('admin.restore');
     Route::post('/restore/{id}', [AdminController::class, 'restore'])->name('admin.restore.single');
+
+    // Rota para deletar permanentemente os dados
+    Route::delete('/admin/force-delete/{id}', [AdminController::class, 'forceDelete'])->name('admin.forceDelete');
+
 });

@@ -86,4 +86,12 @@ class AdminController extends Controller
 
         return view('admin.restore', compact('pessoas', 'erro'));
     }
+
+    public function forceDelete($id)
+    {
+        $pessoa = Pessoa::onlyTrashed()->findOrFail($id); // busca apenas registros excluídos
+        $pessoa->forceDelete(); // exclui permanentemente
+
+        return redirect()->route('admin.restore')->with('success', 'Pessoa excluída permanentemente.');
+    }
 }
