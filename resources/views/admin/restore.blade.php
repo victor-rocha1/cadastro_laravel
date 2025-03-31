@@ -28,7 +28,7 @@
             </div>
             <div class="card-footer d-flex justify-content-between">
                 <!-- Restaurar -->
-                <form action="{{ route('admin.restore', $pessoa->id) }}" method="POST">
+                <form action="{{ route('admin.restore.single', $pessoa->id) }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-secondary btn-sm">
                         <i class="fas fa-undo"></i> Restaurar

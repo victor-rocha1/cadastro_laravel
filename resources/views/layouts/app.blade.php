@@ -58,7 +58,9 @@
 
             input.value = cpf;
         }
+    </script>
 
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Formatação telefone
             var inputTelefone = document.getElementById('telefone');
