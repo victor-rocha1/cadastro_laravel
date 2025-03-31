@@ -7,19 +7,16 @@ use App\Models\Pessoa;
 
 class HomeController extends Controller
 {
-    public function filtrar(Request $request)
-    {
+    public function filtrar(Request $request){
         $pessoas = null;
         $erro = null;
 
-        $acao = $request->input('acao');
+        if ($request->filled('pesquisar')) {
+            $pesquisa = trim($request->input('pesquisar'));
 
-        if ($acao === 'listar') {
-            return redirect()->route('admin.listar');
-        } elseif ($acao === 'pesquisar' && $request->filled('pesquisar')) {
-            $pesquisa = $request->input('pesquisar');
-            $pessoas = Pessoa::where('nome', 'LIKE', "%$pesquisa%")
-                ->orWhere('cpf', 'LIKE', "%$pesquisa%")
+            $pessoas = Pessoa::whereRaw("LOWER(nome) LIKE ?", ["%" . strtolower($pesquisa) . "%"])
+                ->orWhereRaw("REPLACE(cpf, '.', '') LIKE ?", ["%" . str_replace(['.', '-'], '', $pesquisa) . "%"])
+                ->orderBy('nome') // ordena os nomes em ordem alfabética
                 ->get();
 
             if ($pessoas->isEmpty()) {

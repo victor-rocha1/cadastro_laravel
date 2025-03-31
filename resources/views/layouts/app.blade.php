@@ -42,77 +42,16 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script>
-        function formatarCPF(event) {
-            let input = event.target;
-            let cpf = input.value.replace(/\D/g, ''); // Remove tudo que não for número
-
-            if (cpf.length > 3 && cpf.length <= 6) {
-                cpf = cpf.replace(/(\d{3})(\d{1,3})/, '$1.$2');
-            } else if (cpf.length > 6 && cpf.length <= 9) {
-                cpf = cpf.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
-            } else if (cpf.length > 9) {
-                cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
-            }
-
-            input.value = cpf;
-        }
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Formatação telefone
-            var inputTelefone = document.getElementById('telefone');
-            inputTelefone.addEventListener('input', function(event) {
-                var valor = event.target.value.replace(/\D/g, '');
-                if (valor.length <= 2) {
-                    event.target.value = '(' + valor;
-                } else if (valor.length <= 6) {
-                    event.target.value = '(' + valor.substring(0, 2) + ') ' + valor.substring(2);
-                } else {
-                    event.target.value = '(' + valor.substring(0, 2) + ') ' + valor.substring(2, 7) + '-' + valor.substring(7, 11);
-                }
-            });
-
-            // Formatação CEP
-            var inputCep = document.getElementById('cep');
-            inputCep.addEventListener('input', function(event) {
-                var valorCep = event.target.value.replace(/\D/g, '');
-                if (valorCep.length <= 5) {
-                    event.target.value = valorCep;
-                } else {
-                    event.target.value = valorCep.substring(0, 5) + '-' + valorCep.substring(5, 8);
-                }
-            });
-        });
-
-        function consultarCEP() {
-            var cep = document.getElementById('cep').value.replace(/\D/g, '');
-            if (cep.length === 8) {
-                fetch(`https://viacep.com.br/ws/${cep}/json/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (!data.erro) {
-                            document.getElementById('logradouro').value = data.logradouro;
-                            document.getElementById('bairro').value = data.bairro;
-                            document.getElementById('cidade').value = data.localidade;
-                            document.getElementById('estado').value = data.uf;
-                        } else {
-                            alert('CEP não encontrado.');
-                        }
-                    })
-                    .catch(error => {
-                        alert('Erro ao consultar o CEP.');
-                    });
-            } else {
-                alert('CEP inválido.');
-            }
-        }
-    </script>
-
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="{{ asset('js/formatarCPF.js') }}"></script>
+    <script src="{{ asset('js/formatarTelefone.js') }}"></script>
+    <script src="{{ asset('js/formatarCEP.js') }}"></script>
+    <script src="{{ asset('js/consultarCEP.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/mascaraCPF.js') }}"></script>
+
 </body>
 
 </html>

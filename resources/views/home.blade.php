@@ -8,7 +8,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">Pesquisar Cadastro</h2>
-        <form method="GET" action="{{ route('home') }}" class="d-flex">
+        <form method="GET" action="{{ route('admin.listar') }}" class="d-flex">
             @csrf
             <input type="hidden" name="acao" id="acao" value="listar">
             <button type="submit" class="btn btn-primary ms-2">
@@ -20,18 +20,16 @@
     <!-- form de pesquisa -->
     <form method="GET" action="{{ route('home') }}">
         @csrf
-        <input type="hidden" name="acao" id="acao" value="">
-
-        <!-- campo de pesquisa -->
         <div class="mb-3">
             <label for="pesquisar" class="form-label">Pesquisar por nome ou CPF:</label>
-            <input type="text" id="pesquisar" name="pesquisar" class="form-control" placeholder="Digite o nome ou CPF" oninput="formatarCPF(event)">
+            <input type="text" id="pesquisar" name="pesquisar" class="form-control" placeholder="Digite o nome ou CPF" oninput="mascaraCPF(event)">
         </div>
 
-        <button type="submit" class="btn btn-success w-100" onclick="document.getElementById('acao').value='pesquisar';">
+        <button type="submit" class="btn btn-success w-100">
             <i class="fas fa-search"></i> Pesquisar
         </button>
     </form>
+
 
     <!-- resultados de pesquisa -->
     @if (isset($erro))
