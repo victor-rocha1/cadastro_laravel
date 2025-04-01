@@ -80,6 +80,7 @@
         "body-parser": "^1.20.3",
         "bonjour": "^3.5.0",
         "boolbase": "^1.0.0",
+        "bootstrap": "^5.3.3",
         "brace-expansion": "^1.1.11",
         "braces": "^2.3.2",
         "brorand": "^1.1.0",
