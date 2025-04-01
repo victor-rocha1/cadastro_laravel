@@ -30,7 +30,7 @@
                 <!-- Restaurar -->
                 <form action="{{ route('admin.restore.single', $pessoa->id) }}" method="POST">
                     @csrf
-                    <button type="submit" class="btn btn-secondary btn-sm">
+                    <button type="submit" class="btn btn-primary btn-sm">
                         <i class="fas fa-undo"></i> Restaurar
                     </button>
                 </form>
@@ -51,7 +51,7 @@
 </div>
 @endif
 
-<a href="{{ route('admin.listar') }}" class="btn btn-primary mt-3">
+<a href="{{ route('admin.listar') }}" class="btn btn-secondary mt-3">
     <i class="fas fa-arrow-left"></i> Voltar para a Listagem
 </a>
 
