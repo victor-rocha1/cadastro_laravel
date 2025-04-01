@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="estado" class="form-label fw-bold">Estado:</label>
+                    <label for="estado" class="form-label  fw-bold">Estado:</label>
                     <select name="estado" id="estado" class="form-control" required>
                         <option value="">Selecione o estado</option>
                         @foreach (['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'] as $estado)

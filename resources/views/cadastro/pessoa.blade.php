@@ -51,11 +51,3 @@
     </div>
 </div>
 @endsection
-
-@push('styles')
-<style>
-    body {
-        background-color: #f2f2f2;
-    }
-</style>
-@endpush

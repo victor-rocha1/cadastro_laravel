@@ -62,7 +62,7 @@
 @endif
 
 <a href="{{ route('home') }}" class="btn btn-secondary">
-    <i class="fas fa-arrow-left"></i> Voltar para a Página Inicial
+    <i class="fas fa-arrow-left me-2"></i> Voltar para a Página Inicial
 </a>
 
 @endsection
