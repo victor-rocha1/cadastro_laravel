@@ -14,14 +14,15 @@ return new class extends Migration {
     {
         Schema::create('pessoas', function (Blueprint $table) {
             $table->id();
-            $table->string('nome', 255);
-            $table->string('nome_social', 255)->nullable();
-            $table->string('cpf', 14)->unique();
-            $table->string('nome_pai', 255)->nullable();
-            $table->string('nome_mae', 255)->nullable();
-            $table->string('telefone', 20)->nullable();
-            $table->string('email', 255)->nullable();
+            $table->string('nome');
+            $table->string('nome_social')->nullable();
+            $table->string('nome_pai')->nullable(); 
+            $table->string('nome_mae')->nullable(); 
+            $table->string('cpf')->unique();
+            $table->string('email')->unique()->nullable();
+            $table->string('telefone')->unique();
             $table->timestamps();
+            $table->softDeletes();  
         });
     }
 
