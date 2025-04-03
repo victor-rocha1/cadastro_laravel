@@ -27,7 +27,7 @@ class EnderecoController extends Controller
         $idPessoa = session('id_pessoa');
 
         if (!$idPessoa) {
-            return redirect()->route('cadastro.pessoa.form')
+            return redirect()->route('cadastro.endereco.form')
                 ->withErrors(['erro' => 'Por favor, preencha os dados pessoais primeiro.']);
         }
 
