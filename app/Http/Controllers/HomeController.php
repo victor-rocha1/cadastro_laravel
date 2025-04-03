@@ -7,7 +7,18 @@ use App\Models\Pessoa;
 
 class HomeController extends Controller
 {
-    public function filtrar(Request $request){
+
+    public function index()
+    {
+        $pessoas = null;
+        $erro = null;
+
+        return view('home', compact('pessoas', 'erro'));
+    }
+
+
+    public function filtrar(Request $request)
+    {
         $pessoas = null;
         $erro = null;
 
@@ -15,10 +26,10 @@ class HomeController extends Controller
             $pesquisa = trim($request->input('pesquisar'));
 
             $pessoas = Pessoa::whereRaw("LOWER(nome) LIKE ?", ["%" . strtolower($pesquisa) . "%"])
-            ->orWhere('cpf', 'LIKE', "%$pesquisa%")
+                ->orWhere('cpf', 'LIKE', "%$pesquisa%")
                 ->orderBy('nome') // ordena os nomes em ordem alfabética
                 ->get();
-                
+
             // dd($pessoas);
 
             if ($pessoas->isEmpty()) {

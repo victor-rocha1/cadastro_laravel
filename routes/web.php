@@ -1,12 +1,13 @@
-    <?php
+<?php
 
-    use App\Http\Controllers\AdminController;
-    use App\Http\Controllers\EnderecoController;
-    use App\Http\Controllers\HomeController;
-    use App\Http\Controllers\PessoaController;
-    use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EnderecoController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PessoaController;
+use Illuminate\Support\Facades\Route;
 
-    /*
+/*
     |---------------------------------------------------------------------- 
     | Web Routes
     |---------------------------------------------------------------------- 
@@ -16,45 +17,42 @@
     |
     */
 
-    // Página inicial
-    Route::match(['get', 'post'], '/', [HomeController::class, 'filtrar'])
-        ->name('home');
+// Redireciona para a home se estiver autenticado, senão vai para a tela de login
+Route::get('/', function () {
+    return auth()->check() ? redirect()->route('/home') : redirect()->route('login');
+});
 
-    // Grupo de rotas para Cadastro de Pessoa e Endereço
+// Rotas de Autenticação
+Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Rota pública (pesquisa pode ser acessada sem login)
+Route::get('/pesquisa', [HomeController::class, 'filtrar'])->name('pesquisa');
+
+// Grupo de rotas protegidas por autenticação
+Route::middleware('auth')->group(function () {
+    // Página inicial (após login)
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+    // Cadastro de Pessoas e Endereços
     Route::prefix('cadastro')->group(function () {
-        Route::match(['get', 'post'], '/pessoa', [PessoaController::class, 'cadastro'])
-            ->name('cadastro.pessoa');
+        Route::match(['get', 'post'], '/pessoa', [PessoaController::class, 'cadastro'])->name('cadastro.pessoa');
 
         Route::prefix('endereco')->group(function () {
-            Route::get('/', [EnderecoController::class, 'formEndereco'])
-                ->name('cadastro.endereco.form');
-            Route::post('/', [EnderecoController::class, 'cadastrarEndereco'])
-                ->name('cadastro.endereco');
+            Route::get('/', [EnderecoController::class, 'formEndereco'])->name('cadastro.endereco.form');
+            Route::post('/', [EnderecoController::class, 'cadastrarEndereco'])->name('cadastro.endereco');
         });
     });
 
-    // Grupo de rotas para Admin
-    Route::prefix('admin')->group(function () {
-        // Rota para listar as pessoas (GET puro)
-        Route::get('/listar', [AdminController::class, 'listar'])
-            ->name('admin.listar');
-
-        // Rota para edit
-        Route::get('/edit/{id}', [AdminController::class, 'edit'])
-            ->name('admin.edit');
-
-        // Rota para update
-        Route::put('/update/{id}', [AdminController::class, 'update'])
-            ->name('admin.update');
-
-        // Rota para delete
-        Route::delete('/destroy/{id}', [AdminController::class, 'destroy'])
-            ->name('admin.destroy');
-
-        // Rota para restore
+    // Rotas Administrativas (com middleware de admin)
+    Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+        Route::get('/listar', [AdminController::class, 'listar'])->name('admin.listar');
+        Route::get('/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit');
+        Route::put('/update/{id}', [AdminController::class, 'update'])->name('admin.update');
+        Route::delete('/destroy/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
         Route::get('/restore', [AdminController::class, 'restore'])->name('admin.restore');
         Route::post('/restore/{id}', [AdminController::class, 'restore'])->name('admin.restore.single');
-
-        // Rota para deletar permanentemente os dados
-        Route::delete('/admin/force-delete/{id}', [AdminController::class, 'forceDelete'])->name('admin.forceDelete');
+        Route::delete('/force-delete/{id}', [AdminController::class, 'forceDelete'])->name('admin.forceDelete');
     });
+});
