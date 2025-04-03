@@ -1,58 +1,55 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\EnderecoController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PessoaController;
+use App\Http\Controllers\{
+    AdminController,
+    AuthController,
+    EnderecoController,
+    HomeController,
+    PessoaController
+};
 use Illuminate\Support\Facades\Route;
 
 /*
-    |---------------------------------------------------------------------- 
-    | Web Routes
-    |---------------------------------------------------------------------- 
-    | Here is where you can register web routes for your application.
-    | These routes are loaded by the RouteServiceProvider within a group
-    | which contains the "web" middleware group. Now create something great!
-    |
-    */
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
 
-// Redireciona para a home se estiver autenticado, senão vai para a tela de login
-Route::get('/', function () {
-    return auth()->check() ? redirect()->route('/home') : redirect()->route('login');
+// Redireciona para a home se estiver autenticado, senão para a tela de login
+Route::get('/', fn() => auth()->check() ? redirect()->route('home') : redirect()->route('login'));
+
+// Autenticação
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/login', 'loginForm')->name('login');
+    Route::post('/login', 'login');
+    Route::post('/logout', 'logout')->name('logout');
 });
 
-// Rotas de Autenticação
-Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-// Rota pública (pesquisa pode ser acessada sem login)
+// Rota pública
 Route::get('/pesquisa', [HomeController::class, 'filtrar'])->name('pesquisa');
 
-// Grupo de rotas protegidas por autenticação
+// Grupo protegido por autenticação
 Route::middleware('auth')->group(function () {
-    // Página inicial (após login)
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     // Cadastro de Pessoas e Endereços
     Route::prefix('cadastro')->group(function () {
         Route::match(['get', 'post'], '/pessoa', [PessoaController::class, 'cadastro'])->name('cadastro.pessoa');
 
-        Route::prefix('endereco')->group(function () {
-            Route::get('/', [EnderecoController::class, 'formEndereco'])->name('cadastro.endereco.form');
-            Route::post('/', [EnderecoController::class, 'cadastrarEndereco'])->name('cadastro.endereco');
+        Route::prefix('endereco')->controller(EnderecoController::class)->group(function () {
+            Route::get('/', 'formEndereco')->name('cadastro.endereco.form');
+            Route::post('/', 'cadastrarEndereco')->name('cadastro.endereco');
         });
     });
 
-    // Rotas Administrativas (com middleware de admin)
-    Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-        Route::get('/listar', [AdminController::class, 'listar'])->name('admin.listar');
-        Route::get('/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit');
-        Route::put('/update/{id}', [AdminController::class, 'update'])->name('admin.update');
-        Route::delete('/destroy/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
-        Route::get('/restore', [AdminController::class, 'restore'])->name('admin.restore');
-        Route::post('/restore/{id}', [AdminController::class, 'restore'])->name('admin.restore.single');
-        Route::delete('/force-delete/{id}', [AdminController::class, 'forceDelete'])->name('admin.forceDelete');
+    // Rotas Admin
+    Route::prefix('admin')->middleware('admin')->controller(AdminController::class)->group(function () {
+        Route::get('/listar', 'listar')->name('admin.listar');
+        Route::get('/edit/{id}', 'edit')->name('admin.edit');
+        Route::put('/update/{id}', 'update')->name('admin.update');
+        Route::delete('/destroy/{id}', 'destroy')->name('admin.destroy');
+        Route::get('/restore', 'restore')->name('admin.restore');
+        Route::post('/restore/{id}', 'restore')->name('admin.restore.single');
+        Route::delete('/force-delete/{id}', 'forceDelete')->name('admin.forceDelete');
     });
 });

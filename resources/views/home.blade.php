@@ -45,19 +45,22 @@
             @endif
         @endif
 
-        <!-- Formulário para listar cadastros -->
-        <form method="GET" action="{{ route('admin.listar') }}" class="mb-3">
-            @csrf
-            <input type="hidden" name="acao" id="acao" value="listar">
-            <button type="submit" class="btn btn-primary w-100 mt-5">
-                <i class="fas fa-list"></i> Listar Cadastros
-            </button>
-        </form>
+        <!-- Apenas administradores podem listar e cadastrar -->
+        @if (Auth::check() && Auth::user()->is_admin)
+            <!-- Formulário para listar cadastros -->
+            <form method="GET" action="{{ route('admin.listar') }}" class="mb-3">
+                @csrf
+                <input type="hidden" name="acao" id="acao" value="listar">
+                <button type="submit" class="btn btn-primary w-100 mt-5">
+                    <i class="fas fa-list"></i> Listar Cadastros
+                </button>
+            </form>
 
-        <!-- Link para novo cadastro -->
-        <a href="{{ route('cadastro.pessoa') }}" class="btn btn-success w-100">
-            <i class="fas fa-user-plus"></i> Realizar Novo Cadastro
-        </a>
+            <!-- Link para novo cadastro -->
+            <a href="{{ route('cadastro.pessoa') }}" class="btn btn-success w-100">
+                <i class="fas fa-user-plus"></i> Realizar Novo Cadastro
+            </a>
+        @endif
     </div>
 </div>
 @endsection
