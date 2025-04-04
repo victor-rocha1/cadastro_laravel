@@ -20,10 +20,13 @@ Route::get('/', fn() => auth()->check() ? redirect()->route('home') : redirect()
 
 // Autenticação
 Route::controller(AuthController::class)->group(function () {
-    Route::get('/login', 'loginForm')->name('login');
-    Route::post('/login', 'login');
-    Route::post('/logout', 'logout')->name('logout');
+    Route::get('/login', 'loginForm')->name('login'); 
+    Route::post('/login', 'login'); 
+    Route::post('/logout', 'logout')->name('logout'); 
+    Route::get('/registrar', 'create')->name('register'); 
+    Route::post('/registrar', 'store')->name('register.store'); 
 });
+
 
 // Rota pública
 Route::get('/pesquisa', [HomeController::class, 'filtrar'])->name('pesquisa');
