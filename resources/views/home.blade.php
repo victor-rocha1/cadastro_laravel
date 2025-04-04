@@ -8,6 +8,12 @@
 <div class="container mt-4 d-flex justify-content-center">
     <div class="card col-md-6 p-4">
         <h2 class="mb-4 text-center">Pesquisar Cadastro</h2>
+        <form method="POST" action="{{ route('logout') }}" class="mt-3">
+            @csrf
+            <button type="submit" class="btn btn-danger">
+                Sair
+            </button>
+        </form>
 
         <!-- Formulário de pesquisa -->
         <form method="GET" action="{{ route('home') }}">

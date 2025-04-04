@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body">
                     @if(session('error'))
-                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
 
                     <form method="POST" action="{{ route('login') }}">
@@ -29,6 +29,17 @@
                             <button type="submit" class="btn btn-primary">Entrar</button>
                         </div>
                     </form>
+
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
                 </div>
             </div>
             <div class="text-center mt-3">
