@@ -27,7 +27,7 @@ class AuthController extends Controller
             return redirect()->route('home'); // Redireciona para a página inicial
         }
 
-        return back()->withErrors(['email' => 'Email ou senha Inocrretos']);
+        return back()->withErrors(['email' => 'Email ou senha incorretos, tente novamente']);
     }
 
     // Faz logout
