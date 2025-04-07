@@ -24,7 +24,7 @@
             <h2 class="mb-4 text-center">Pesquisar Cadastro</h2>
 
             <!-- Formulário de pesquisa -->
-            <form method="GET" action="{{ route('home') }}">
+            <form method="GET" action="{{ route('pesquisa') }}">
                 @csrf
                 <div class="mb-3">
                     <label for="pesquisar" class="form-label fw-bold">Pesquisar por nome ou CPF:</label>
