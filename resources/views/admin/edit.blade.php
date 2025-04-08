@@ -2,7 +2,8 @@
 
 @section('title', 'Editar Cadastro')
 
-@section('header', 'Editar Cadastro')
+@section('title-header', 'Editar Cadastro')
+
 
 @section('content')
 @if (session('success'))

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
-
 use App\Models\Pessoa;
 use Illuminate\Http\Request;
 
@@ -48,7 +46,7 @@ class AdminController extends Controller
             'cep', 'logradouro', 'numero', 'complemento', 'bairro', 'estado', 'cidade'
         ]));
 
-        return redirect()->route('admin.listar')->with('sucesso', 'Cadastro atualizado com sucesso.');
+        return redirect()->route('admin.listar')->with('success', 'Cadastro atualizado com sucesso.');
     }
 
     // deletar
@@ -57,14 +55,14 @@ class AdminController extends Controller
         $pessoa = Pessoa::findOrFail($id);
         $pessoa->delete();
 
-        return redirect()->route('admin.listar')->with('sucesso', 'Pessoa excluída com sucesso.');
+        return redirect()->route('admin.listar')->with('success', 'Pessoa excluída com sucesso.');
     }
 
     public function restore($id = null)
     {
         if ($id) {
             Pessoa::onlyTrashed()->findOrFail($id)->restore();
-            return redirect()->route('admin.restore')->with('sucesso', 'Pessoa restaurada com sucesso!');
+            return redirect()->route('admin.restore')->with('success', 'Pessoa restaurada com sucesso!');
         }
 
         $pessoas = Pessoa::onlyTrashed()->get();
@@ -77,6 +75,6 @@ class AdminController extends Controller
     public function forceDelete($id)
     {
         Pessoa::onlyTrashed()->findOrFail($id)->forceDelete();
-        return redirect()->route('admin.restore')->with('sucesso', 'Pessoa excluída permanentemente.');
+        return redirect()->route('admin.restore')->with('success', 'Pessoa excluída permanentemente.');
     }
 }

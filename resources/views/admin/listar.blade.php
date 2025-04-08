@@ -13,6 +13,12 @@
 
 @section('content')
 
+@if (session('success'))
+<div class="alert alert-success text-center">
+    {{ session('success') }}
+</div>
+@endif
+
 @if ($pessoas->isEmpty())
     <p class="text-danger text-center">Nenhuma pessoa cadastrada.</p>
 @else

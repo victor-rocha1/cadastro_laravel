@@ -2,7 +2,7 @@
 
 @section('title', 'Cadastrar Usuário')
 
-@section('header', 'Cadastrar Usuário')
+@section('title-header', 'Cadastrar Usuário')
 
 @section('content')
 <div class="d-flex justify-content-center align-items-center min-vh-100">

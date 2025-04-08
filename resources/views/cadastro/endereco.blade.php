@@ -2,7 +2,7 @@
 
 @section('title', 'Cadastrar Endereço')
 
-@section('header', 'Cadastrar Endereço')
+@section('title-header', 'Cadastrar Endereço')
 
 @section('content')
 
