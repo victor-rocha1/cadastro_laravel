@@ -17,18 +17,19 @@ class AuthController extends Controller
 
     // Processa o login
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+{
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if (Auth::attempt($credentials)) {
-            return redirect()->route('home'); // Redireciona para a página inicial
-        }
-
-        return back()->withErrors(['email' => 'Email ou senha incorretos, tente novamente']);
+    if (Auth::attempt($credentials)) {
+        session()->flash('success', 'Login realizado com sucesso!');
+        return redirect()->route('home'); // Redireciona para a página inicial
     }
+
+    return back()->withErrors(['email' => 'Email ou senha incorretos, tente novamente']);
+}
 
     // Faz logout
     public function logout()

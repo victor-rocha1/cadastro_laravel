@@ -29,7 +29,7 @@
                 <input type="text" class="form-control"
                     name="cpf" id="cpf" placeholder="000.000.000-00"
                     value="{{ old('cpf') }}" required
-                    oninput="formatarCPF(event)" onblur="checarCPF()" maxlength="14">
+                    oninput="formatarCPF(event)"  maxlength="14">
 
                 <div id="erro-cpf" class="invalid-feedback" style="display: none;">
                     CPF inválido. Verifique e tente novamente.

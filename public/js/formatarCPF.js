@@ -11,7 +11,7 @@ function formatarCPF(event) {
     }
 
     input.value = cpf;
-    checarCPF(); // Já chama a validação enquanto o usuário digita
+    // checarCPF(); // Já chama a validação enquanto o usuário digita
 }
 
 function validarCPF(cpf) {

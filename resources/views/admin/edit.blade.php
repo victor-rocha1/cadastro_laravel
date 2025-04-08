@@ -5,6 +5,11 @@
 @section('header', 'Editar Cadastro')
 
 @section('content')
+@if (session('success'))
+<div class="alert alert-success text-center">
+    {{ session('success') }}
+</div>
+@endif
 
 <form method="POST" action="{{ route('admin.update', $dados->id) }}">
     @csrf

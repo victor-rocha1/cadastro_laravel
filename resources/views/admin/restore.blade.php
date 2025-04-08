@@ -9,6 +9,11 @@
 @endsection
 
 @section('content')
+@if (session('success'))
+<div class="alert alert-success text-center">
+    {{ session('success') }}
+</div>
+@endif
 
 @if ($pessoas->isEmpty())
 <p class="text-danger">Nenhuma pessoa excluída.</p>

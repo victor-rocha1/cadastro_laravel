@@ -32,7 +32,7 @@
 
     <!-- Cabeçalho -->
     <div class="container mt-4">
-        <h1 class="text-center mt-4">@yield('header')</h1>
+        @yield('header')
 
         <!-- Conteúdo -->
         @yield('content')
@@ -54,6 +54,20 @@
     <script src="{{ asset('js/consultarCEP.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/mascaraCPF.js') }}"></script>
+
+    <script>
+    // Espera 5 segundos e some com os alertas
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            alert.style.transition = 'opacity 0.3s ease-out';
+            alert.style.opacity = '0';
+
+            setTimeout(() => alert.remove(), 500); // Remove do DOM após desaparecer
+        });
+    }, 3000); // 5000 milissegundos = 5 segundos
+</script>
+
 
 </body>
 
