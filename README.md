@@ -1,61 +1,151 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
-
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
+  <a href="https://laravel.com" target="_blank">
+    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="380" alt="Laravel Logo">
+  </a>
 </p>
 
-## About Laravel
+<h1 align="center">📋 Sistema de Cadastro de Pessoas - Laravel</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+  Projeto completo com autenticação, controle de acesso, cadastro de pessoas e múltiplos endereços, utilizando Laravel, Bootstrap e integração com API de CEP.
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<p align="center">
+  <img src="https://img.shields.io/badge/Laravel-10.x-red?style=flat&logo=laravel">
+  <img src="https://img.shields.io/badge/PHP-8.x-blue?style=flat&logo=php">
+  <img src="https://img.shields.io/badge/MySQL-Database-blue?style=flat&logo=mysql">
+  <img src="https://img.shields.io/badge/License-MIT-green">
+</p>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 📌 Visão Geral
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Este projeto foi desenvolvido com o objetivo de gerenciar cadastros de pessoas físicas, com possibilidade de adicionar múltiplos endereços (residencial e comercial), realizar buscas por nome ou CPF, e controlar o acesso ao sistema com base no tipo de usuário.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+O sistema foi construído com base na arquitetura MVC (Model-View-Controller) e segue boas práticas de organização, modularização de código e usabilidade.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## ✅ Funcionalidades
 
-### Premium Partners
+### Autenticação de usuários com dois tipos de acesso:
+  - 👤 **Usuário Comum**: acesso restrito
+  - 🛠️ **Administrador**: acesso completo (cadastrar, editar, excluir e restaurar dados)
+### Cadastro de pessoas com os seguintes dados:
+  - Nome, Nome Social, CPF, Nome do Pai, Nome da Mãe, Telefone, Email
+### Cadastro de endereços:
+  - CEP, logradouro, número, complemento, bairro, estado e cidade
+  - Preenchimento automático via integração com a [API ViaCEP](https://viacep.com.br)
+### Pesquisa de pessoas por nome ou CPF
+- Máscara e validação de CPF
+- Separação de scripts JavaScript por responsabilidade
+- Design responsivo com Bootstrap
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## 🧱 Estrutura de Pastas
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+CADASTRO_LARAVEL/
+├── app/
+│   ├── Console/
+│   ├── Exceptions/
+│   └── Http/
+│       ├── Controllers/
+│       ├── Middleware/
+│       └── Kernel.php
+├── bootstrap/
+├── config/
+├── database/
+├── node_modules/
+├── public/
+├── resources/
+│   ├── js/          # Scripts separados
+│   ├── lang/
+│   └── views/       # Views Blade
+├── routes/
+│   └── web.php      # Arquivo de rotas principais
+├── storage/
+├── tests/
+├── vendor/
+├── .env
+├── .env.example
+├── artisan
+├── composer.json
+├── package.json
+├── README.md
+├── server.php
+├── webpack.mix.js
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🚀 Como Executar o Projeto
 
-## Security Vulnerabilities
+> **Pré-requisitos:** PHP 8.x, Composer, MySQL, Node.js (opcional para frontend)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Clone o repositório:
+```bash
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
+```
 
-## License
+2. Instale as dependências PHP:
+```bash
+composer install
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+3. Instale as dependências frontend (se necessário):
+```bash
+npm install && npm run dev
+```
+
+4. Copie o arquivo `.env.example` para `.env` e configure:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+5. Configure seu banco de dados no `.env` e rode as migrations:
+```bash
+php artisan migrate
+```
+
+6. Inicie o servidor local:
+```bash
+php artisan serve
+```
+
+---
+
+## 👨‍💻 Tecnologias Utilizadas
+
+- [Laravel](https://laravel.com/)
+- [PHP](https://www.php.net/)
+- [MySQL](https://www.mysql.com/)
+- [Bootstrap](https://getbootstrap.com/)
+- [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
+- [ViaCEP API](https://viacep.com.br)
+
+---
+
+## 👮‍♂️ Controle de Acesso
+
+- **Administrador:** acesso total ao sistema
+- **Usuário Comum:** acesso limitado (apenas leitura)
+
+Todas as rotas sensíveis são protegidas para garantir a integridade dos dados e segurança da aplicação.
+
+---
+
+## 🤝 Contribuindo
+
+Contribuições são muito bem-vindas!  
+Abra uma _issue_, envie um _pull request_ ou sugira melhorias.
+
+---
+
+## 🛡️ Licença
+
+Este projeto está licenciado sob a [MIT License](https://opensource.org/licenses/MIT).
