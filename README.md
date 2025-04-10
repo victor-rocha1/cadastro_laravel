@@ -13,7 +13,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Laravel-10.x-red?style=flat&logo=laravel">
   <img src="https://img.shields.io/badge/PHP-8.x-blue?style=flat&logo=php">
-  <img src="https://img.shields.io/badge/MySQL-Database-blue?style=flat&logo=mysql">
+  <img src="https://img.shields.io/badge/PostgreSQL-Database-blue?style=flat&logo=postgresql">
   <img src="https://img.shields.io/badge/License-MIT-green">
 </p>
 
