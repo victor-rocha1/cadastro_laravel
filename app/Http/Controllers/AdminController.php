@@ -9,7 +9,7 @@ class AdminController extends Controller
 {
     public function listar()
     {
-        $pessoas = Pessoa::with('endereco')->get();
+        $pessoas = Pessoa::with('endereco')->orderBy('nome','asc')->get();
         return view('admin.listar', [
             'pessoas' => $pessoas,
             'erro' => $pessoas->isEmpty() ? "Nenhuma pessoa cadastrada." : null
