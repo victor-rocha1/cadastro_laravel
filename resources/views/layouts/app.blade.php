@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
 
+    <link rel="icon" type="image/png" href="/images/logo.png">
+
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -43,7 +45,7 @@
 
     <footer class="mt-auto">
         <div class="container d-flex justify-content-center align-items-center">
-            <img src="{{ asset('logo_prodemge.png') }}" alt="Logo Prodemge" width="150" class="me-3">
+            <img src="{{ asset('/images/logo_prodemge.png') }}" alt="Logo Prodemge" width="150" class="me-3">
             <p class="mb-0">© 2025 - Victor Rocha - Prodemge.</p>
         </div>
     </footer>

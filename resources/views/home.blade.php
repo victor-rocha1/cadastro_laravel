@@ -2,7 +2,7 @@
 
 @section('title', 'Sistema de Cadastro')
 
-'@section('header')
+@section('header')
 <div class="container mt-3">
 
     @auth
