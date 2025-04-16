@@ -10,7 +10,6 @@ class PessoaController extends Controller
     public function cadastro(Request $request)
     {
         if ($request->isMethod('post')) {
-            // Remove caracteres não numéricos do telefone
             $request->merge([
                 'telefone' => preg_replace('/\D/', '', $request->telefone)
             ]);
@@ -32,15 +31,13 @@ class PessoaController extends Controller
                 'telefone.unique' => 'Este telefone já está cadastrado.'
             ]);
 
-            // Salva os dados no banco antes de redirecionar
-            $pessoa = Pessoa::create($dadosPessoa);
-
-            // Armazena apenas o ID na sessão
-            session(['id_pessoa' => $pessoa->id]);
+            // Salva os dados na sessão
+            session(['dados_pessoa' => $dadosPessoa]);
 
             return redirect()->route('cadastro.endereco.form');
         }
 
+        // Se não for POST, exibe o formulário de cadastro de pessoa
         return view('cadastro.pessoa');
     }
 }

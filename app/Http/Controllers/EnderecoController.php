@@ -12,26 +12,25 @@ class EnderecoController extends Controller
 {
     public function formEndereco()
     {
-        $idPessoa = session('id_pessoa');
+        $dadosPessoa = session('dados_pessoa');
 
-        if (!$idPessoa) {
-            return redirect()->route('cadastro.pessoa.form')
+        if (!$dadosPessoa) {
+            return redirect()->route('cadastro.pessoa')
                 ->withErrors(['erro' => 'Por favor, preencha os dados pessoais primeiro.']);
         }
 
-        return view('cadastro.endereco', compact('idPessoa'));
+        return view('cadastro.endereco');
     }
 
     public function cadastrarEndereco(Request $request)
     {
-        $idPessoa = session('id_pessoa');
+        $dadosPessoa = session('dados_pessoa');
 
-        if (!$idPessoa) {
-            return redirect()->route('cadastro.endereco.form')
+        if (!$dadosPessoa) {
+            return redirect()->route('cadastro.pessoa')
                 ->withErrors(['erro' => 'Por favor, preencha os dados pessoais primeiro.']);
         }
 
-        // Validação do formulário
         $validatedEndereco = $request->validate([
             'cep' => 'required|string|max:9',
             'logradouro' => 'required|string|max:255',
@@ -53,13 +52,15 @@ class EnderecoController extends Controller
         try {
             DB::beginTransaction();
 
-            // Encontrar a pessoa pelo ID salvo na sessão
-            $pessoa = Pessoa::findOrFail($idPessoa);
+            // Cria a pessoa
+            $pessoa = Pessoa::create($dadosPessoa);
+
+            // Cria o endereço relacionado
             $pessoa->endereco()->create($validatedEndereco);
 
             DB::commit();
 
-            session()->forget('id_pessoa');
+            session()->forget('dados_pessoa');
 
             return redirect()->route('home')->with('success', 'Cadastro finalizado com sucesso!');
         } catch (\Exception $e) {
