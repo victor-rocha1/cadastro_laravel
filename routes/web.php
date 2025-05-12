@@ -9,3 +9,7 @@ Route::get('/', function () {
 Route::get('/pessoa', function () {
     return view('cadastro.pessoa');
 });
+
+Route::get('/endereco', function () {
+    return view('cadastro.endereco');
+});

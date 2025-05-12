@@ -42,9 +42,10 @@
               <i class="fas fa-list"></i> Listar Cadastros
             </button>
 
-            <button class="btn btn-success w-100">
+            <button class="btn btn-success w-100" @click="irParaCadastro">
               <i class="fas fa-user-plus"></i> Realizar Novo Cadastro
             </button>
+
           </div>
         </div>
       </div>
@@ -79,6 +80,9 @@ export default {
       } finally {
         this.pesquisado = true;
       }
+    },
+    irParaCadastro() {
+      window.location.href = '/pessoa'; // Redireciona pra view de cadastro
     }
   }
 };

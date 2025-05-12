@@ -16,6 +16,11 @@ class HomeController extends Controller
         return view('home', compact('pessoas', 'erro'));
     }
 
+    public function cadastro()
+    {
+        return view('cadastro.pessoa');
+    }
+
 
     public function pesquisar(Request $request)
     {

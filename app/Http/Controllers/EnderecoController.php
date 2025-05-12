@@ -2,72 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Pessoa;
 use App\Models\Endereco;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Models\Pessoa;
+use Illuminate\Http\Request;
 
 class EnderecoController extends Controller
 {
-    public function formEndereco()
+    // Exibe o formulário de endereço
+    public function create($pessoa_id)
     {
-        $dadosPessoa = session('dados_pessoa');
+        // Verifica se a pessoa existe
+        $pessoa = Pessoa::findOrFail($pessoa_id);
 
-        if (!$dadosPessoa) {
-            return redirect()->route('cadastro.pessoa')
-                ->withErrors(['erro' => 'Por favor, preencha os dados pessoais primeiro.']);
-        }
-
-        return view('cadastro.endereco');
+        // Retorna a view com os dados da pessoa
+        return view('cadastro.endereco', compact('pessoa'));
     }
 
-    public function cadastrarEndereco(Request $request)
+    // Armazena o endereço e associa à pessoa
+    public function store(Request $request, $pessoa_id)
     {
-        $dadosPessoa = session('dados_pessoa');
-
-        if (!$dadosPessoa) {
-            return redirect()->route('cadastro.pessoa')
-                ->withErrors(['erro' => 'Por favor, preencha os dados pessoais primeiro.']);
-        }
-
-        $validatedEndereco = $request->validate([
-            'cep' => 'required|string|max:9',
+        // Validação dos dados de endereço
+        $validatedData = $request->validate([
             'logradouro' => 'required|string|max:255',
-            'numero' => 'required|string|max:10',
             'bairro' => 'required|string|max:255',
-            'estado' => 'required|string|max:2',
-            'cidade' => 'required|string|max:255',
-        ], [
-            'cep.required' => 'O campo CEP é obrigatório.',
-            'cep.max' => 'O CEP deve ter no máximo 9 caracteres.',
-            'logradouro.required' => 'O campo logradouro é obrigatório.',
-            'numero.required' => 'O número é obrigatório.',
-            'bairro.required' => 'O bairro é obrigatório.',
-            'estado.required' => 'O estado é obrigatório.',
-            'estado.max' => 'O estado deve ter 2 letras (exemplo: SP).',
-            'cidade.required' => 'A cidade é obrigatória.',
+            'cep' => 'required|string|size:8',
         ]);
 
-        try {
-            DB::beginTransaction();
+        // Criação do endereço e associação à pessoa
+        $endereco = new Endereco($validatedData);
+        $endereco->id_pessoa = $pessoa_id;
+        $endereco->save();
 
-            // Cria a pessoa
-            $pessoa = Pessoa::create($dadosPessoa);
-
-            // Cria o endereço relacionado
-            $pessoa->endereco()->create($validatedEndereco);
-
-            DB::commit();
-
-            session()->forget('dados_pessoa');
-
-            return redirect()->route('home')->with('success', 'Cadastro finalizado com sucesso!');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Erro ao cadastrar endereço: ' . $e->getMessage());
-
-            return back()->withErrors(['erro' => 'Erro ao cadastrar: ' . $e->getMessage()]);
-        }
+        // Redireciona para uma página de sucesso
+        return redirect()->route('cadastro.sucesso');
     }
 }

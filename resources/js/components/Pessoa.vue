@@ -45,7 +45,7 @@
                 <!-- Botões Voltar e Próximo -->
                 <div class="d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" @click="voltar">Voltar</button>
-                    <button type="submit" class="btn btn-success">Próximo</button>
+                    <button type="submit" class="btn btn-success" @click="irParaCadastro">Próximo</button>
                 </div>
             </form>
         </div>
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data() {
         return {
@@ -81,19 +82,24 @@ export default {
             }
         },
         submitForm() {
-            // Chame seu método de envio de formulário aqui
+            // Enviando os dados do formulário
             console.log('Formulário enviado:', this.form);
-            // Simulando uma chamada de API para salvar os dados
+
+            // Aqui você chama o backend para salvar os dados e, se tudo estiver certo, redireciona
             axios.post('/api/cadastro', this.form)
                 .then(response => {
-                    // Sucesso no envio, redirecionar ou mostrar mensagem
-                    this.$router.push({ name: 'next-step' }); // Roteamento para outra página
+                    // Sucesso, redireciona para a página de Endereço (via Laravel)
+                    window.location.href = '/endereco'; // Redireciona para a página de endereço
                 })
                 .catch(error => {
                     // Tratar erros de validação
                     this.errors = error.response.data.errors;
                 });
         },
+        endereco() {
+            window.location.href = '/pessoa'; // Redireciona pra view de cadastro
+        },
+
         voltar() {
             this.$router.push({ name: 'previous-step' }); // Voltar para a página anterior
         }
