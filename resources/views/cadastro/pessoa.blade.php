@@ -1,5 +1,5 @@
 @extends('master')
 
 @section('content')
-    <div id="home-app"></div>
+    <div id="pessoa-app"></div>
 @endsection

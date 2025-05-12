@@ -37,7 +37,7 @@
             Nenhum cadastro encontrado.
           </div>
 
-          <div class="mt-5" v-if="true /* simula is_admin */">
+          <div class="mt-5" v-if="true">
             <button class="btn btn-primary w-100 mb-3">
               <i class="fas fa-list"></i> Listar Cadastros
             </button>
