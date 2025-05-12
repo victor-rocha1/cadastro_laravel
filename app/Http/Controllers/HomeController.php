@@ -17,26 +17,25 @@ class HomeController extends Controller
     }
 
 
-    public function filtrar(Request $request)
+    public function pesquisar(Request $request)
     {
-        $pessoas = null;
-        $erro = null;
+        try {
+            if ($request->filled('pesquisar')) {
+                $pesquisa = trim($request->input('pesquisar'));
 
-        if ($request->filled('pesquisar')) {
-            $pesquisa = trim($request->input('pesquisar'));
+                // A consulta do banco de dados
+                $pessoas = Pessoa::whereRaw("LOWER(nome) LIKE ?", ["%" . strtolower($pesquisa) . "%"])
+                    ->orWhere('cpf', 'LIKE', "%$pesquisa%")
+                    ->orderBy('nome')
+                    ->get();
 
-            $pessoas = Pessoa::whereRaw("LOWER(nome) LIKE ?", ["%" . strtolower($pesquisa) . "%"])
-                ->orWhere('cpf', 'LIKE', "%$pesquisa%")
-                ->orderBy('nome') // ordena os nomes em ordem alfabética
-                ->get();
-
-            // dd($pessoas);
-
-            if ($pessoas->isEmpty()) {
-                $erro = "Nenhuma pessoa encontrada para: $pesquisa";
+                return response()->json($pessoas);
             }
-        }
 
-        return view('home', compact('pessoas', 'erro'));
+            return response()->json([]);
+        } catch (\Exception $e) {
+            // Retorne o erro se ocorrer uma exceção
+            return response()->json(['error' => 'Erro ao realizar a pesquisa: ' . $e->getMessage()], 500);
+        }
     }
 }
