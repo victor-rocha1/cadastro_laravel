@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\HomeController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\PessoaController;
+
 use Illuminate\Support\Facades\Route;
 
 

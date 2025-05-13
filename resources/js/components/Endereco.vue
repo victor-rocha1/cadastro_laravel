@@ -111,7 +111,7 @@ export default {
         });
     },
     submitForm() {
-      axios.post('/api/cadastro/endereco', this.form)
+      axios.post('/cadastro/endereco', this.form)
         .then(response => {
           this.successMessage = 'Endereço cadastrado com sucesso!';
           this.resetForm();

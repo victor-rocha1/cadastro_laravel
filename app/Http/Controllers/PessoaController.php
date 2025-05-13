@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers;
+
 use App\Models\Pessoa;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class PessoaController extends Controller
         $validatedData = $request->validate([
             'nome' => 'required|string|max:255',
             'nome_social' => 'nullable|string|max:255',
-            'cpf' => 'required|string|size:11',
+            'cpf' => 'required|string|size:14',
             'nome_pai' => 'nullable|string|max:255',
             'nome_mae' => 'nullable|string|max:255',
             'telefone' => 'required|string|max:15',
