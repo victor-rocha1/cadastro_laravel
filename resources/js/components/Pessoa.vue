@@ -86,26 +86,26 @@ export default {
     methods: {
         formatarCPF() {
             let cpf = this.form.cpf.replace(/\D/g, '');
-            if (cpf.length <= 14) {
-                cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-                cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-                cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            }
+            cpf = cpf.slice(0, 11); // limita a 11 dígitos numéricos
+            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
             this.form.cpf = cpf;
         },
         submitForm() {
-            // Envia os dados via POST
-            axios.post('/cadastro', this.form)
-                .then(() => {
-                    // Redireciona após o envio
-                    window.location.href = '/endereco';
+            axios.post('/pessoa', this.form)
+                .then(response => {
+                    // Redireciona com pessoa_id recebido do backend
+                    window.location.href = response.data.redirect;
                 })
                 .catch(error => {
-                    console.error('Erro ao enviar dados:', error);
-                    window.location.href = '/endereco';
+                    if (error.response && error.response.data.errors) {
+                        this.errors = error.response.data.errors;
+                    } else {
+                        console.error('Erro ao enviar dados:', error);
+                    }
                 });
         },
-
         voltar() {
             history.back();
         }

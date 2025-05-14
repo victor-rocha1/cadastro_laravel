@@ -23,7 +23,9 @@ class PessoaController extends Controller
         // Criação da Pessoa
         $pessoa = Pessoa::create($validatedData);
 
-        // Armazenar o id da pessoa na sessão ou passar via URL
-        return redirect()->route('cadastro.endereco', ['pessoa_id' => $pessoa->id]);
+        // Retorne JSON com a URL já montada
+        return response()->json([
+            'redirect' => route('cadastro.endereco', ['pessoa_id' => $pessoa->id])
+        ]);
     }
 }

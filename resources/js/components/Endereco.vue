@@ -94,7 +94,6 @@ export default {
   methods: {
     consultarCEP() {
       if (this.form.cep.length < 8) return;
-      // Exemplo fake de consulta, substitua pelo seu endpoint real se tiver
       axios.get(`https://viacep.com.br/ws/${this.form.cep}/json/`)
         .then(response => {
           if (!response.data.erro) {
@@ -111,7 +110,7 @@ export default {
         });
     },
     submitForm() {
-      axios.post('/cadastro/endereco', this.form)
+      axios.post(`/cadastro/endereco/${this.form.id_pessoa}`, this.form)
         .then(response => {
           this.successMessage = 'Endereço cadastrado com sucesso!';
           this.resetForm();

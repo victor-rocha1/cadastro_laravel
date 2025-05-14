@@ -27746,7 +27746,6 @@ __webpack_require__.r(__webpack_exports__);
     consultarCEP: function consultarCEP() {
       var _this = this;
       if (this.form.cep.length < 8) return;
-      // Exemplo fake de consulta, substitua pelo seu endpoint real se tiver
       axios__WEBPACK_IMPORTED_MODULE_0__["default"].get("https://viacep.com.br/ws/".concat(this.form.cep, "/json/")).then(function (response) {
         if (!response.data.erro) {
           _this.form.logradouro = response.data.logradouro || '';
@@ -27762,7 +27761,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     submitForm: function submitForm() {
       var _this2 = this;
-      axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('/cadastro/endereco', this.form).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0__["default"].post("/cadastro/endereco/".concat(this.form.id_pessoa), this.form).then(function (response) {
         _this2.successMessage = 'Endereço cadastrado com sucesso!';
         _this2.resetForm();
       })["catch"](function (error) {
@@ -27892,21 +27891,23 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     formatarCPF: function formatarCPF() {
       var cpf = this.form.cpf.replace(/\D/g, '');
-      if (cpf.length <= 14) {
-        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-      }
+      cpf = cpf.slice(0, 11); // limita a 11 dígitos numéricos
+      cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+      cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+      cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
       this.form.cpf = cpf;
     },
     submitForm: function submitForm() {
-      // Envia os dados via POST
-      axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('/cadastro', this.form).then(function () {
-        // Redireciona após o envio
-        window.location.href = '/endereco';
+      var _this = this;
+      axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('/pessoa', this.form).then(function (response) {
+        // Redireciona com pessoa_id recebido do backend
+        window.location.href = response.data.redirect;
       })["catch"](function (error) {
-        console.error('Erro ao enviar dados:', error);
-        window.location.href = '/endereco';
+        if (error.response && error.response.data.errors) {
+          _this.errors = error.response.data.errors;
+        } else {
+          console.error('Erro ao enviar dados:', error);
+        }
       });
     },
     voltar: function voltar() {

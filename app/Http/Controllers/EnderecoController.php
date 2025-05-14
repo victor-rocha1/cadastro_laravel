@@ -21,19 +21,26 @@ class EnderecoController extends Controller
     // Armazena o endereço e associa à pessoa
     public function store(Request $request, $pessoa_id)
     {
+        // Confirma se a pessoa existe mesmo
+        $pessoa = Pessoa::findOrFail($pessoa_id);
+
         // Validação dos dados de endereço
         $validatedData = $request->validate([
             'logradouro' => 'required|string|max:255',
             'bairro' => 'required|string|max:255',
             'cep' => 'required|string|size:8',
+            'numero' => 'required|string|max:255',
+            'complemento' => 'required|string|max:255',
+            'estado' => 'required|string|max:255',
+            'cidade' => 'required|string|max:255',
         ]);
 
-        // Criação do endereço e associação à pessoa
+        // Cria e associa o endereço à pessoa
         $endereco = new Endereco($validatedData);
         $endereco->id_pessoa = $pessoa_id;
         $endereco->save();
 
-        // Redireciona para uma página de sucesso
+        // Redireciona pra tela de sucesso (ou responde JSON se for API)
         return redirect()->route('cadastro.sucesso');
     }
 }
