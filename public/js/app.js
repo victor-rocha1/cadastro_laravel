@@ -27774,9 +27774,15 @@ __webpack_require__.r(__webpack_exports__);
         alert('ID da pessoa não informado.');
         return;
       }
+
+      // Limpar o CEP antes de enviar
+      this.form.cep = this.form.cep.replace(/\D/g, '');
       axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/endereco', this.form).then(function () {
         _this3.successMessage = 'Endereço cadastrado com sucesso!';
-        _this3.resetForm();
+        // Redireciona para a página inicial após 1 segundo (opcional)
+        setTimeout(function () {
+          window.location.href = '/';
+        }, 1000);
       })["catch"](function (error) {
         console.error(error);
         alert('Erro ao cadastrar endereço.');

@@ -40,6 +40,6 @@ class EnderecoController extends Controller
         $endereco->id_pessoa = $pessoa_id;
         $endereco->save();
 
-        return redirect()->route('home');
+        return redirect('/'); 
     }
 }

@@ -10,7 +10,8 @@
 
         <div class="mb-3">
           <label for="cep" class="form-label fw-bold">CEP:</label>
-          <input type="text" id="cep" v-model="form.cep" class="form-control" required maxlength="10" placeholder="00000-000" @blur="consultarCEP" />
+          <input type="text" id="cep" v-model="form.cep" class="form-control" required maxlength="10"
+            placeholder="00000-000" @blur="consultarCEP" />
         </div>
 
         <div class="mb-3">
@@ -20,7 +21,8 @@
 
         <div class="mb-3">
           <label for="numero" class="form-label fw-bold">Número:</label>
-          <input type="text" id="numero" v-model="form.numero" class="form-control" required maxlength="4" placeholder="00" />
+          <input type="text" id="numero" v-model="form.numero" class="form-control" required maxlength="4"
+            placeholder="00" />
         </div>
 
         <div class="mb-3">
@@ -119,10 +121,16 @@ export default {
         return;
       }
 
+      // Limpar o CEP antes de enviar
+      this.form.cep = this.form.cep.replace(/\D/g, '');
+
       axios.post('/api/endereco', this.form)
         .then(() => {
           this.successMessage = 'Endereço cadastrado com sucesso!';
-          this.resetForm();
+          // Redireciona para a página inicial após 1 segundo (opcional)
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 1000);
         })
         .catch(error => {
           console.error(error);
