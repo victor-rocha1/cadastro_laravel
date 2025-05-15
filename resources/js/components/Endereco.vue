@@ -1,7 +1,6 @@
 <template>
   <div class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="card p-4 shadow-lg border-0" style="width: 100%; max-width: 500px; border-radius: 12px;">
-
       <div v-if="successMessage" class="alert alert-success text-center">
         {{ successMessage }}
       </div>
@@ -11,8 +10,7 @@
 
         <div class="mb-3">
           <label for="cep" class="form-label fw-bold">CEP:</label>
-          <input type="text" id="cep" v-model="form.cep" class="form-control" required maxlength="10"
-            placeholder="00000-000" @blur="consultarCEP" />
+          <input type="text" id="cep" v-model="form.cep" class="form-control" required maxlength="10" placeholder="00000-000" @blur="consultarCEP" />
         </div>
 
         <div class="mb-3">
@@ -22,8 +20,7 @@
 
         <div class="mb-3">
           <label for="numero" class="form-label fw-bold">Número:</label>
-          <input type="text" id="numero" v-model="form.numero" class="form-control" required maxlength="4"
-            placeholder="00" />
+          <input type="text" id="numero" v-model="form.numero" class="form-control" required maxlength="4" placeholder="00" />
         </div>
 
         <div class="mb-3">
@@ -40,9 +37,7 @@
           <label for="estado" class="form-label fw-bold">Estado:</label>
           <select id="estado" v-model="form.estado" class="form-control" required>
             <option value="">Selecione o estado</option>
-            <option v-for="estado in estados" :key="estado" :value="estado">
-              {{ estado }}
-            </option>
+            <option v-for="estado in estados" :key="estado" :value="estado">{{ estado }}</option>
           </select>
         </div>
 
@@ -56,7 +51,6 @@
           <button type="submit" class="btn btn-success">Finalizar Cadastro</button>
         </div>
       </form>
-
     </div>
   </div>
 </template>
@@ -74,7 +68,7 @@ export default {
   data() {
     return {
       form: {
-        id_pessoa: this.idPessoa,
+        id_pessoa: '',
         cep: '',
         logradouro: '',
         numero: '',
@@ -90,6 +84,16 @@ export default {
         'RR', 'SC', 'SP', 'SE', 'TO'
       ]
     };
+  },
+  mounted() {
+    // Aqui pega o último ID da pessoa quando o componente carrega
+    axios.get('/api/pessoa/ultimo-id')
+      .then(res => {
+        this.form.id_pessoa = res.data.ultimoId || '';
+      })
+      .catch(() => {
+        alert('Não foi possível obter o último ID da pessoa.');
+      });
   },
   methods: {
     consultarCEP() {
@@ -110,19 +114,24 @@ export default {
         });
     },
     submitForm() {
-      axios.post(`/cadastro/endereco/${this.form.id_pessoa}`, this.form)
-        .then(response => {
+      if (!this.form.id_pessoa) {
+        alert('ID da pessoa não informado.');
+        return;
+      }
+
+      axios.post('/api/endereco', this.form)
+        .then(() => {
           this.successMessage = 'Endereço cadastrado com sucesso!';
           this.resetForm();
         })
         .catch(error => {
           console.error(error);
-          alert('Erro ao cadastrar o endereço.');
+          alert('Erro ao cadastrar endereço.');
         });
     },
     resetForm() {
       this.form = {
-        id_pessoa: this.idPessoa,
+        id_pessoa: this.form.id_pessoa, // mantém o id_pessoa mesmo depois do reset
         cep: '',
         logradouro: '',
         numero: '',

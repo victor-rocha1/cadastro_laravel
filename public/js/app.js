@@ -27729,7 +27729,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       form: {
-        id_pessoa: this.idPessoa,
+        id_pessoa: '',
         cep: '',
         logradouro: '',
         numero: '',
@@ -27742,16 +27742,25 @@ __webpack_require__.r(__webpack_exports__);
       estados: ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
     };
   },
+  mounted: function mounted() {
+    var _this = this;
+    // Aqui pega o último ID da pessoa quando o componente carrega
+    axios__WEBPACK_IMPORTED_MODULE_0__["default"].get('/api/pessoa/ultimo-id').then(function (res) {
+      _this.form.id_pessoa = res.data.ultimoId || '';
+    })["catch"](function () {
+      alert('Não foi possível obter o último ID da pessoa.');
+    });
+  },
   methods: {
     consultarCEP: function consultarCEP() {
-      var _this = this;
+      var _this2 = this;
       if (this.form.cep.length < 8) return;
       axios__WEBPACK_IMPORTED_MODULE_0__["default"].get("https://viacep.com.br/ws/".concat(this.form.cep, "/json/")).then(function (response) {
         if (!response.data.erro) {
-          _this.form.logradouro = response.data.logradouro || '';
-          _this.form.bairro = response.data.bairro || '';
-          _this.form.cidade = response.data.localidade || '';
-          _this.form.estado = response.data.uf || '';
+          _this2.form.logradouro = response.data.logradouro || '';
+          _this2.form.bairro = response.data.bairro || '';
+          _this2.form.cidade = response.data.localidade || '';
+          _this2.form.estado = response.data.uf || '';
         } else {
           alert('CEP não encontrado.');
         }
@@ -27760,18 +27769,23 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     submitForm: function submitForm() {
-      var _this2 = this;
-      axios__WEBPACK_IMPORTED_MODULE_0__["default"].post("/cadastro/endereco/".concat(this.form.id_pessoa), this.form).then(function (response) {
-        _this2.successMessage = 'Endereço cadastrado com sucesso!';
-        _this2.resetForm();
+      var _this3 = this;
+      if (!this.form.id_pessoa) {
+        alert('ID da pessoa não informado.');
+        return;
+      }
+      axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/endereco', this.form).then(function () {
+        _this3.successMessage = 'Endereço cadastrado com sucesso!';
+        _this3.resetForm();
       })["catch"](function (error) {
         console.error(error);
-        alert('Erro ao cadastrar o endereço.');
+        alert('Erro ao cadastrar endereço.');
       });
     },
     resetForm: function resetForm() {
       this.form = {
-        id_pessoa: this.idPessoa,
+        id_pessoa: this.form.id_pessoa,
+        // mantém o id_pessoa mesmo depois do reset
         cep: '',
         logradouro: '',
         numero: '',
