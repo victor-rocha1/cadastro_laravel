@@ -28,8 +28,8 @@ class HomeController extends Controller
             if ($request->filled('pesquisar')) {
                 $pesquisa = trim($request->input('pesquisar'));
 
-                // A consulta do banco de dados
-                $pessoas = Pessoa::whereRaw("LOWER(nome) LIKE ?", ["%" . strtolower($pesquisa) . "%"])
+                // Testa só esse where simples
+                $pessoas = Pessoa::where('nome', 'LIKE', "%$pesquisa%")
                     ->orWhere('cpf', 'LIKE', "%$pesquisa%")
                     ->orderBy('nome')
                     ->get();
@@ -39,8 +39,9 @@ class HomeController extends Controller
 
             return response()->json([]);
         } catch (\Exception $e) {
-            // Retorne o erro se ocorrer uma exceção
-            return response()->json(['error' => 'Erro ao realizar a pesquisa: ' . $e->getMessage()], 500);
+            return response()->json([
+                'error' => 'Erro ao realizar a pesquisa: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

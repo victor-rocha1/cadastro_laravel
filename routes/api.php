@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PessoaController;
@@ -19,3 +20,5 @@ Route::get('/pessoa/ultimo-id', function () {
 
 
 Route::post('/endereco', [EnderecoController::class, 'store']);
+
+Route::get('/pessoas/{id}', [AdminController::class, 'getPessoa']);

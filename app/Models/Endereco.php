@@ -23,7 +23,6 @@ class Endereco extends Model
         'cidade',
     ];
 
-    // Relacionamento com Pessoa
     public function pessoa()
     {
         return $this->belongsTo(Pessoa::class, 'id_pessoa');

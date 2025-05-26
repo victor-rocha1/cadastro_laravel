@@ -38,7 +38,7 @@
           </div>
 
           <div class="mt-5" v-if="true">
-            <button class="btn btn-primary w-100 mb-3">
+            <button class="btn btn-primary w-100 mb-3" @click="irParaLista">
               <i class="fas fa-list"></i> Listar Cadastros
             </button>
 
@@ -81,6 +81,11 @@ export default {
         this.pesquisado = true;
       }
     },
+
+    irParaLista() {
+      window.location.href = '/lista';
+    },
+
     irParaCadastro() {
       window.location.href = '/pessoa'; // Redireciona pra view de cadastro
     }

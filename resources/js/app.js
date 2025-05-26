@@ -1,12 +1,9 @@
 import { createApp } from 'vue';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap';
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import Home from './components/Home.vue';
 import Pessoa from './components/cadastro/Pessoa.vue';
 import Endereco from './components/cadastro/Endereco.vue';
 import Lista from './components/admin/Lista.vue';
-
+import Edit from './components/admin/Edit.vue';
 
 const path = window.location.pathname;
 
@@ -36,6 +33,15 @@ switch (path) {
         break;
 
     default:
-        console.error('Nenhum app correspondente encontrado para a rota:', path);
+        if (/^\/(editar|admin\/\d+\/edit)$/.test(path)) {
+            if (document.getElementById('edit-app')) {
+                const idMatch = path.match(/\d+/); // pega o primeiro número da URL
+                const id = idMatch ? idMatch[0] : null;
+
+                if (id) {
+                    createApp(Edit, { id: id }).mount('#edit-app');
+                }
+            }
+        }
         break;
 }

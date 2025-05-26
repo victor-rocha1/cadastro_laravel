@@ -22,9 +22,8 @@ class Pessoa extends Model
         'email',
     ];
 
-    // Relacionamento de 1 para 1 com Endereco
     public function endereco()
     {
-        return $this->hasOne(Endereco::class, 'id_pessoa');
+        return $this->hasOne(Endereco::class, 'id_pessoa', 'id');
     }
 }
