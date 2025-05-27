@@ -18,14 +18,14 @@ Route::get('/endereco', function () {
     return view('cadastro.endereco');
 })->name('cadastro.endereco');
 
-// LISTAR pessoas
+// Rota para a view de listagem. Essa view usará um componente Vue para carregar os dados.
 Route::get('/lista', [AdminController::class, 'listar'])->name('admin.listar');
 
-// EDITAR pessoa (form)
+// EDITAR pessoa (form) - Mostra o formulário de edição de uma pessoa específica
 Route::get('/admin/{id}/edit', [AdminController::class, 'edit'])->name('admin.edit');
 
-// ATUALIZAR pessoa (form submit)
+// ATUALIZAR pessoa (form submit) - Processa a atualização de uma pessoa
 Route::put('/admin/{id}', [AdminController::class, 'update'])->name('admin.update');
 
-// DELETAR pessoa
-Route::delete('/admin/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
+// Rotas para a lixeira/restauração de cadastros (views)
+Route::get('/admin/restore/{id?}', [AdminController::class, 'restore'])->name('admin.restore');

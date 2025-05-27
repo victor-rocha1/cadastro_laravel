@@ -1,6 +1,6 @@
 <template>
+    <h1 class="d-flex justify-content-center mb-4">Cadastro</h1>
     <form @submit.prevent="atualizarPessoa" class="row">
-        <!-- Coluna Pessoa -->
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="nome">Nome:</label>
@@ -44,7 +44,6 @@
             </div>
         </div>
 
-        <!-- Coluna Endereço -->
         <div class="col-md-6" v-if="pessoa.endereco">
             <div class="mb-3">
                 <label for="cep">CEP:</label>
@@ -88,7 +87,8 @@
         </div>
 
         <div class="col-12">
-            <button type="submit" class="btn btn-success w-100">Salvar Dados</button>
+            <button type="submit" class="btn btn-success w-100 mb-2">Salvar Dados</button>
+            <button type="button" @click="excluirPessoa" class="btn btn-danger w-100">Excluir Cadastro</button>
         </div>
     </form>
 </template>
@@ -125,28 +125,50 @@ export default {
     },
     methods: {
         carregarDados() {
+            // AJUSTE CRUCIAL AQUI: A rota /admin/{id} para GET da pessoa está na api.php.
+            // Certifique-se de que a chamada use o prefixo /api/.
             axios
-                .get(`/api/pessoas/${this.id}`)
+                .get(`/api/admin/${this.id}`) // <-- Correção: Use /api/
                 .then((res) => {
                     this.pessoa = res.data;
                     if (!this.pessoa.endereco) this.pessoa.endereco = {};
                 })
                 .catch((err) => {
                     console.error("Erro ao carregar dados:", err);
-                    alert("Não foi possível carregar os dados");
+                    alert("Não foi possível carregar os dados.");
                 });
         },
         atualizarPessoa() {
             axios
-                .put(`/admin/${this.id}`, this.pessoa)
+                .put(`/admin/${this.id}`, this.pessoa) // Rota web para atualização (processada pelo Laravel)
                 .then(() => {
                     alert("Dados atualizados com sucesso!");
-                    window.location.href = "/lista"; // 👈 Troquei pra redirecionar via window
+                    window.location.href = "/lista";
                 })
                 .catch((err) => {
                     console.error("Erro na atualização:", err);
-                    alert("Erro ao salvar dados");
+                    const errorMessage = err.response && err.response.data && err.response.data.message
+                        ? err.response.data.message
+                        : "Erro ao salvar dados.";
+                    alert(errorMessage);
                 });
+        },
+        excluirPessoa() {
+            if (confirm("Tem certeza que deseja excluir este cadastro? Ele será arquivado, mas não removido permanentemente.")) {
+                axios
+                    .delete(`/api/admin/${this.id}`) 
+                    .then((res) => {
+                        alert(res.data.message || "Cadastro excluído com sucesso (soft delete)!");
+                        window.location.href = "/lista";
+                    })
+                    .catch((err) => {
+                        console.error("Erro ao excluir cadastro:", err);
+                        const errorMessage = err.response && err.response.data && err.response.data.message
+                            ? err.response.data.message
+                            : "Erro ao excluir cadastro.";
+                        alert(errorMessage);
+                    });
+            }
         },
         formatarCPF(event) {
             let v = event.target.value.replace(/\D/g, "");
@@ -175,7 +197,7 @@ export default {
                     this.pessoa.endereco.estado = res.data.uf;
                 })
                 .catch(() => {
-                    alert("Erro ao consultar CEP");
+                    alert("Erro ao consultar CEP.");
                 });
         },
         somenteNumeros(event) {
