@@ -1,96 +1,117 @@
 <template>
-    <h1 class="d-flex justify-content-center mb-4">Cadastro</h1>
-    <form @submit.prevent="atualizarPessoa" class="row">
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label for="nome">Nome:</label>
-                <input type="text" v-model="pessoa.nome" class="form-control" id="nome" placeholder="Nome" required />
+    <div class="d-flex justify-content-center align-items-center min-vh-100 py-4">
+        <div class="card p-4 shadow-lg border-0" style="width: 100%; max-width: 800px; border-radius: 12px;">
+            <h1 class="text-center mb-4">Editar Cadastro</h1>
+
+            <div v-if="feedbackMessage"
+                :class="['alert', isError ? 'alert-danger' : 'alert-success', 'text-center', 'feedback-message']"
+                role="alert">
+                {{ feedbackMessage }}
             </div>
 
-            <div class="mb-3">
-                <label for="nome_social">Nome Social (opcional):</label>
-                <input type="text" v-model="pessoa.nome_social" class="form-control" id="nome_social"
-                    placeholder="Nome Social" />
-            </div>
+            <form @submit.prevent="atualizarPessoa" class="row g-3">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label fw-bold">Nome:</label>
+                        <input type="text" v-model="pessoa.nome" class="form-control" id="nome"
+                            placeholder="Nome completo" required />
+                    </div>
 
-            <div class="mb-3">
-                <label for="cpf">CPF:</label>
-                <input type="text" v-model="pessoa.cpf" @input="formatarCPF" maxlength="14" class="form-control"
-                    id="cpf" placeholder="000.000.000-00" required />
-            </div>
+                    <div class="mb-3">
+                        <label for="nome_social" class="form-label fw-bold">Nome Social (opcional):</label>
+                        <input type="text" v-model="pessoa.nome_social" class="form-control" id="nome_social"
+                            placeholder="Como prefere ser chamado(a)" />
+                    </div>
 
-            <div class="mb-3">
-                <label for="nome_pai">Nome do Pai:</label>
-                <input type="text" v-model="pessoa.nome_pai" class="form-control" id="nome_pai"
-                    placeholder="Nome do Pai" />
-            </div>
+                    <div class="mb-3">
+                        <label for="cpf" class="form-label fw-bold">CPF:</label>
+                        <input type="text" v-model="pessoa.cpf" @input="formatarCPF" maxlength="14" class="form-control"
+                            id="cpf" placeholder="000.000.000-00" required />
+                    </div>
 
-            <div class="mb-3">
-                <label for="nome_mae">Nome da Mãe:</label>
-                <input type="text" v-model="pessoa.nome_mae" class="form-control" id="nome_mae"
-                    placeholder="Nome da Mãe" />
-            </div>
+                    <div class="mb-3">
+                        <label for="nome_pai" class="form-label fw-bold">Nome do Pai (opcional):</label>
+                        <input type="text" v-model="pessoa.nome_pai" class="form-control" id="nome_pai"
+                            placeholder="Nome do pai" />
+                    </div>
 
-            <div class="mb-3">
-                <label for="telefone">Telefone:</label>
-                <input type="tel" v-model="pessoa.telefone" class="form-control" id="telefone"
-                    placeholder="(31) 99999-9999" />
-            </div>
+                    <div class="mb-3">
+                        <label for="nome_mae" class="form-label fw-bold">Nome da Mãe (opcional):</label>
+                        <input type="text" v-model="pessoa.nome_mae" class="form-control" id="nome_mae"
+                            placeholder="Nome da mãe" />
+                    </div>
 
-            <div class="mb-3">
-                <label for="email">E-mail:</label>
-                <input type="email" v-model="pessoa.email" class="form-control" id="email"
-                    placeholder="pessoa@gmail.com" />
-            </div>
+                    <div class="mb-3">
+                        <label for="telefone" class="form-label fw-bold">Telefone:</label>
+                        <input type="tel" v-model="pessoa.telefone" @input="formatarTelefone" class="form-control"
+                            id="telefone" placeholder="(00) 00000-0000" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-bold">E-mail:</label>
+                        <input type="email" v-model="pessoa.email" class="form-control" id="email"
+                            placeholder="seuemail@exemplo.com" />
+                    </div>
+                </div>
+
+                <div class="col-md-6" v-if="pessoa.endereco">
+                    <div class="mb-3">
+                        <label for="cep" class="form-label fw-bold">CEP:</label>
+                        <input type="text" v-model="pessoa.endereco.cep" @input="formatarCEP" @blur="consultarCEP"
+                            maxlength="9" class="form-control" id="cep" placeholder="00000-000" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="logradouro" class="form-label fw-bold">Logradouro:</label>
+                        <input type="text" v-model="pessoa.endereco.logradouro" class="form-control" id="logradouro"
+                            placeholder="Rua, Avenida..." required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="numero" class="form-label fw-bold">Número:</label>
+                        <input type="text" v-model="pessoa.endereco.numero" @input="somenteNumeros" maxlength="10"
+                            class="form-control" id="numero" placeholder="Ex: 123, S/N" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="complemento" class="form-label fw-bold">Complemento (opcional):</label>
+                        <input type="text" v-model="pessoa.endereco.complemento" class="form-control" id="complemento"
+                            placeholder="Apto, Bloco, Casa..." />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="bairro" class="form-label fw-bold">Bairro:</label>
+                        <input type="text" v-model="pessoa.endereco.bairro" class="form-control" id="bairro" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="estado" class="form-label fw-bold">Estado:</label>
+                        <select v-model="pessoa.endereco.estado" class="form-select" id="estado" required>
+                            <option disabled value="">Selecione o estado</option>
+                            <option v-for="uf in estados" :key="uf" :value="uf">{{ uf }}</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cidade" class="form-label fw-bold">Cidade:</label>
+                        <input type="text" v-model="pessoa.endereco.cidade" class="form-control" id="cidade" required />
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="mt-2 d-flex flex-column flex-sm-row gap-2">
+                        <button type="button" class="btn btn-secondary w-100 flex-sm-fill"
+                            @click="voltarParaLista">
+                            Voltar para Lista
+                        </button>
+                        <button type="submit" class="btn btn-success w-100 flex-sm-fill">
+                            Salvar Alterações
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-
-        <div class="col-md-6" v-if="pessoa.endereco">
-            <div class="mb-3">
-                <label for="cep">CEP:</label>
-                <input type="text" v-model="pessoa.endereco.cep" @blur="consultarCEP" maxlength="10"
-                    class="form-control" id="cep" placeholder="00000-000" required />
-            </div>
-
-            <div class="mb-3">
-                <label for="logradouro">Logradouro:</label>
-                <input type="text" v-model="pessoa.endereco.logradouro" class="form-control" id="logradouro" required />
-            </div>
-
-            <div class="mb-3">
-                <label for="numero">Número:</label>
-                <input type="text" v-model="pessoa.endereco.numero" @input="somenteNumeros" maxlength="4"
-                    class="form-control" id="numero" placeholder="00" required />
-            </div>
-
-            <div class="mb-3">
-                <label for="complemento">Complemento:</label>
-                <input type="text" v-model="pessoa.endereco.complemento" class="form-control" id="complemento" />
-            </div>
-
-            <div class="mb-3">
-                <label for="bairro">Bairro:</label>
-                <input type="text" v-model="pessoa.endereco.bairro" class="form-control" id="bairro" required />
-            </div>
-
-            <div class="mb-3">
-                <label for="estado">Estado:</label>
-                <select v-model="pessoa.endereco.estado" class="form-control" id="estado" required>
-                    <option value="">Selecione o estado</option>
-                    <option v-for="uf in estados" :key="uf" :value="uf">{{ uf }}</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="cidade">Cidade:</label>
-                <input type="text" v-model="pessoa.endereco.cidade" class="form-control" id="cidade" required />
-            </div>
-        </div>
-
-        <div class="col-12">
-            <button type="submit" class="btn btn-success w-100 mb-2">Salvar Dados</button>
-            <button type="button" @click="excluirPessoa" class="btn btn-danger w-100">Excluir Cadastro</button>
-        </div>
-    </form>
+    </div>
 </template>
 
 <script>
@@ -138,7 +159,7 @@ export default {
         },
         atualizarPessoa() {
             axios
-                .put(`/admin/${this.id}`, this.pessoa) 
+                .put(`/admin/${this.id}`, this.pessoa)
                 .then(() => {
                     alert("Dados atualizados com sucesso!");
                     window.location.href = "/lista";
@@ -154,7 +175,7 @@ export default {
         excluirPessoa() {
             if (confirm("Tem certeza que deseja excluir este cadastro? Ele será arquivado, mas não removido permanentemente.")) {
                 axios
-                    .delete(`/api/admin/${this.id}`) 
+                    .delete(`/api/admin/${this.id}`)
                     .then((res) => {
                         alert(res.data.message || "Cadastro excluído com sucesso (soft delete)!");
                         window.location.href = "/lista";
