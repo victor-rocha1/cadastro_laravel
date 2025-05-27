@@ -54,7 +54,7 @@
         </div>
 
         <a href="/" class="btn btn-secondary mt-3 d-inline-flex align-items-center">
-            <i class="fas fa-arrow-left me-2"></i> Voltar para a Página Inicial
+            <i class="fas fa-arrow-left me-2"></i> Voltar
         </a>
     </div>
 </template>

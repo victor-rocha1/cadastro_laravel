@@ -125,10 +125,8 @@ export default {
     },
     methods: {
         carregarDados() {
-            // AJUSTE CRUCIAL AQUI: A rota /admin/{id} para GET da pessoa está na api.php.
-            // Certifique-se de que a chamada use o prefixo /api/.
             axios
-                .get(`/api/admin/${this.id}`) // <-- Correção: Use /api/
+                .get(`/api/admin/${this.id}`)
                 .then((res) => {
                     this.pessoa = res.data;
                     if (!this.pessoa.endereco) this.pessoa.endereco = {};
@@ -140,7 +138,7 @@ export default {
         },
         atualizarPessoa() {
             axios
-                .put(`/admin/${this.id}`, this.pessoa) // Rota web para atualização (processada pelo Laravel)
+                .put(`/admin/${this.id}`, this.pessoa) 
                 .then(() => {
                     alert("Dados atualizados com sucesso!");
                     window.location.href = "/lista";

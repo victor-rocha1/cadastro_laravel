@@ -4,6 +4,7 @@ import Pessoa from './components/cadastro/Pessoa.vue';
 import Endereco from './components/cadastro/Endereco.vue';
 import Lista from './components/admin/Lista.vue';
 import Edit from './components/admin/Edit.vue';
+import Restore from './components/admin/Restore.vue';
 
 const path = window.location.pathname;
 
@@ -29,6 +30,12 @@ switch (path) {
     case '/lista':
         if (document.getElementById('lista-app')) {
             createApp(Lista).mount('#lista-app');
+        }
+        break;
+
+    case '/admin/restore':
+        if (document.getElementById('restore-app')) {
+            createApp(Restore).mount('#restore-app');
         }
         break;
 
