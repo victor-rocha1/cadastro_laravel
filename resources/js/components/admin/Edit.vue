@@ -100,10 +100,8 @@
 
                 <div class="col-12">
                     <div class="mt-2 d-flex flex-column flex-sm-row gap-2">
-                        <button type="button" class="btn btn-secondary w-100 flex-sm-fill"
-                            @click="voltarParaLista">
-                            Voltar para Lista
-                        </button>
+                        <a href="/lista" class="btn btn-secondary w-100 flex-sm-fill">Voltar para Lista
+                        </a>
                         <button type="submit" class="btn btn-success w-100 flex-sm-fill">
                             Salvar Alterações
                         </button>

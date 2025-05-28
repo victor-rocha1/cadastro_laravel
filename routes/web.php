@@ -2,30 +2,39 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PessoaController;
+use App\Http\Controllers\AuthController; 
+use App\Http\Controllers\HomeController; 
+use App\Http\Controllers\EnderecoController; 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+// Rotas de Autenticação (exemplo, ajuste conforme sua AuthController)
+Route::get('/login', [AuthController::class, 'loginForm'])->name('login')->middleware('guest');
+Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::get('/register', [AuthController::class, 'create'])->name('register')->middleware('guest');
+Route::post('/register', [AuthController::class, 'store'])->name('register.store')->middleware('guest');
 
-Route::get('/pessoa', function () {
-    return view('cadastro.pessoa');
+// Rotas para usuários autenticados (comuns e admins)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', function () {
+        return view('home');
+    })->name('home'); 
+
+    Route::get('/pessoa', function () {
+        return view('cadastro.pessoa');
+    })->name('cadastro.pessoa'); 
+
+    Route::post('/pessoa', [PessoaController::class, 'cadastro']);
+
+    Route::get('/endereco', function () {
+        return view('cadastro.endereco');
+    })->name('cadastro.endereco');
 });
 
-Route::post('/pessoa', [PessoaController::class, 'cadastro']);
-
-Route::get('/endereco', function () {
-    return view('cadastro.endereco');
-})->name('cadastro.endereco');
-
-// Rota para a view de listagem. Essa view usará um componente Vue para carregar os dados.
-Route::get('/lista', [AdminController::class, 'listar'])->name('admin.listar');
-
-// EDITAR pessoa (form) - Mostra o formulário de edição de uma pessoa específica
-Route::get('/admin/{id}/edit', [AdminController::class, 'edit'])->name('admin.edit');
-
-// ATUALIZAR pessoa (form submit) - Processa a atualização de uma pessoa
-Route::put('/admin/{id}', [AdminController::class, 'update'])->name('admin.update');
-
-// Rotas para a lixeira/restauração de cadastros (views)
-Route::get('/admin/restore/{id?}', [AdminController::class, 'restore'])->name('admin.restore');
+// rotas para Administradores
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/lista', [AdminController::class, 'listar'])->name('admin.listar');
+    Route::get('/admin/{id}/edit', [AdminController::class, 'edit'])->name('admin.edit');
+    Route::put('/admin/{id}', [AdminController::class, 'update'])->name('admin.update'); // Atualiza pessoa
+    Route::get('/admin/restore/{id?}', [AdminController::class, 'restore'])->name('admin.restore'); // View e lógica de restauração
+});

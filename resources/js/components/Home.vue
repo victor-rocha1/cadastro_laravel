@@ -1,10 +1,8 @@
 <template>
   <div class="container mt-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <span class="txt">Bem-vindo, Usuário</span>
-      <form class="logout-form">
-        <button type="button" class="btn btn-danger logout-btn">Sair</button>
-      </form>
+      <span class="txt">Bem-vindo, {{ currentUser ? currentUser.name : 'Usuário' }}</span>
+      <button type="button" @click="handleLogout" class="btn btn-danger logout-btn">Sair</button>
     </div>
 
     <h1 class="text-center">Sistema de Cadastro</h1>
@@ -37,7 +35,7 @@
             Nenhum cadastro encontrado.
           </div>
 
-          <div class="mt-5" v-if="true">
+          <div class="mt-5" v-if="isAdmin">
             <button class="btn btn-primary w-100 mb-3" @click="irParaLista">
               <i class="fas fa-list"></i> Listar Cadastros
             </button>
@@ -45,7 +43,6 @@
             <button class="btn btn-success w-100" @click="irParaCadastro">
               <i class="fas fa-user-plus"></i> Realizar Novo Cadastro
             </button>
-
           </div>
         </div>
       </div>
@@ -57,22 +54,60 @@
 import axios from 'axios';
 
 export default {
-  name: 'App',
+  name: 'Home',
   data() {
     return {
       filtro: '',
       pessoas: [],
-      pesquisado: false
+      pesquisado: false,
+      currentUser: null, 
+      isAdmin: false,    
     };
   },
+  created() {
+    this.loadUserData();
+  },
   methods: {
+    loadUserData() {
+      try {
+        const userDataString = localStorage.getItem('user');
+        const isAdminString = localStorage.getItem('is_admin');
+
+        if (userDataString) {
+          this.currentUser = JSON.parse(userDataString);
+        }
+        if (isAdminString) {
+          this.isAdmin = isAdminString === 'true';
+        }
+
+        if (!this.currentUser) {
+          axios.get('/api/user')
+            .then(response => {
+              this.currentUser = response.data;
+              this.isAdmin = response.data.is_admin;
+              localStorage.setItem('user', JSON.stringify(response.data));
+              localStorage.setItem('is_admin', response.data.is_admin);
+            })
+            .catch(() => {
+              // Não autenticado ou erro, limpar localStorage e redirecionar
+              localStorage.removeItem('user');
+              localStorage.removeItem('is_admin');
+              window.location.href = '/login';
+            });
+        }
+
+      } catch (e) {
+        console.error("Erro ao carregar dados do usuário do localStorage:", e);
+        this.currentUser = null;
+        this.isAdmin = false;
+      }
+    },
     async pesquisar() {
       this.pesquisado = false;
       try {
         const response = await axios.get(`/api/pesquisar`, {
           params: { pesquisar: this.filtro }
         });
-
         this.pessoas = response.data;
       } catch (error) {
         console.error('Erro ao buscar pessoas:', error);
@@ -81,17 +116,30 @@ export default {
         this.pesquisado = true;
       }
     },
-
     irParaLista() {
       window.location.href = '/lista';
     },
-
     irParaCadastro() {
-      window.location.href = '/pessoa'; // Redireciona pra view de cadastro
+      window.location.href = '/pessoa';
+    },
+    async handleLogout() {
+      try {
+        await axios.post('/api/logout');
+
+        localStorage.removeItem('user');
+        localStorage.removeItem('is_admin');
+
+        window.location.href = '/login';
+      } catch (error) {
+        console.error('Erro ao fazer logout:', error);
+        // Mesmo em caso de erro na API, limpa o estado local e redireciona
+        localStorage.removeItem('user');
+        localStorage.removeItem('is_admin');
+        window.location.href = '/login';
+      }
     }
   }
 };
-
 </script>
 
 <style scoped>
@@ -111,9 +159,5 @@ export default {
 
 .logout-btn {
   justify-content: center;
-}
-
-.logout-form {
-  margin: 0;
 }
 </style>

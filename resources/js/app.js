@@ -5,6 +5,8 @@ import Endereco from './components/cadastro/Endereco.vue';
 import Lista from './components/admin/Lista.vue';
 import Edit from './components/admin/Edit.vue';
 import Restore from './components/admin/Restore.vue';
+import Login from './components/auth/Login.vue';
+import Register from './components/auth/Register.vue';
 
 const path = window.location.pathname;
 
@@ -12,6 +14,18 @@ switch (path) {
     case '/':
         if (document.getElementById('home-app')) {
             createApp(Home).mount('#home-app');
+        }
+        break;
+
+    case '/login':
+        if (document.getElementById('login-app')) {
+            createApp(Login).mount('#login-app');
+        }
+        break;
+
+    case '/register':
+        if (document.getElementById('register-app')) {
+            createApp(Register).mount('#register-app');
         }
         break;
 
