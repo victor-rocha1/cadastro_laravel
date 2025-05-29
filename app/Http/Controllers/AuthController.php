@@ -6,17 +6,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException; // Importar para erros de validação
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    // Exibe o formulário de login (que montará o Vue component)
-    public function loginForm() // Mantém para servir a view Blade
+    // exibe o formulário de login
+    public function loginForm()
     {
         return view('auth.login');
     }
 
-    // Processa o login (agora adaptado para web e API)
+    // processa o login 
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -28,7 +28,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-            if ($request->expectsJson()) { // Se a requisição espera JSON (Vue/Axios)
+            if ($request->expectsJson()) {
                 return response()->json([
                     'message' => 'Login realizado com sucesso!',
                     'user' => [
@@ -52,14 +52,13 @@ class AuthController extends Controller
         return back()->withErrors(['email' => 'Email ou senha incorretos, tente novamente']);
     }
 
-    // Faz logout (este já funciona bem para web, para API seria um endpoint separado)
-    public function logout(Request $request) // Mantém para web
+    public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Se for uma chamada API, pode retornar JSON
+
         if ($request->expectsJson()) {
             return response()->json(['message' => 'Logout realizado com sucesso.']);
         }
@@ -67,14 +66,14 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Você saiu com sucesso.');
     }
 
-    // Exibe o formulário de registro (que montará o Vue component)
-    public function create() // Mantém para servir a view Blade
+    // exibe o formulário de registro 
+    public function create()
     {
         return view('auth.register');
     }
 
-    // Salva no banco de dados (agora adaptado para web e API)
-    public function store(Request $request)
+    // salva no banco de dados 
+    public function register(Request $request)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:50',
@@ -88,14 +87,13 @@ class AuthController extends Controller
             'password' => Hash::make($validatedData['password']),
         ]);
 
-        if ($request->expectsJson()) { // Se a requisição espera JSON (Vue/Axios)
+        if ($request->expectsJson()) {
             return response()->json([
                 'message' => 'Usuário cadastrado com sucesso!',
                 'user' => $user
             ], 201); // HTTP 201 Created
         }
 
-        // Para requisições web tradicionais
         return redirect()->route('login')->with('success', 'Usuário cadastrado com sucesso! Faça login.');
     }
 }
