@@ -175,7 +175,7 @@ export default {
                 axios
                     .delete(`/api/admin/${this.id}`)
                     .then((res) => {
-                        alert(res.data.message || "Cadastro excluído com sucesso (soft delete)!");
+                        alert(res.data.message || "Cadastro excluído com sucesso!");
                         window.location.href = "/lista";
                     })
                     .catch((err) => {

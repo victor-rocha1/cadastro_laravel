@@ -16,11 +16,7 @@
         </div>
 
         <div v-else class="row justify-content-center mt-4">
-            <div
-                v-for="pessoa in pessoas"
-                :key="pessoa.id"
-                class="col-12 col-md-6 col-lg-4 mb-4"
-            >
+            <div v-for="pessoa in pessoas" :key="pessoa.id" class="col-12 col-md-6 col-lg-4 mb-4">
                 <div class="card h-100 shadow">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">
@@ -35,19 +31,13 @@
                         </p>
                     </div>
                     <div class="card-footer d-flex gap-2">
-                        <button
-                            type="button"
-                            @click="confirmarRestauracao(pessoa.id)"
-                            class="btn btn-primary btn-sm d-flex align-items-center"
-                        >
+                        <button type="button" @click="confirmarRestauracao(pessoa.id)"
+                            class="btn btn-primary btn-sm d-flex align-items-center">
                             <i class="fas fa-undo me-1"></i> Restaurar
                         </button>
 
-                        <button
-                            type="button"
-                            @click="confirmarExclusaoPermanente(pessoa.id)"
-                            class="btn btn-danger btn-sm d-flex align-items-center"
-                        >
+                        <button type="button" @click="confirmarExclusaoPermanente(pessoa.id)"
+                            class="btn btn-danger btn-sm d-flex align-items-center">
                             <i class="fas fa-trash me-1"></i> Excluir
                         </button>
                     </div>
@@ -69,7 +59,6 @@ export default {
     },
     mounted() {
         this.carregarPessoasExcluidas();
-        // A mensagem de sucesso ainda pode vir da window, se houver
         this.successMessage = window.successMessage || '';
     },
     methods: {
@@ -95,7 +84,7 @@ export default {
             }
         },
         restaurarPessoa(id) {
-            axios.post(`/api/admin/${id}/restore`) // Nova rota API para restaurar
+            axios.post(`/api/admin/${id}/restore`)
                 .then(response => {
                     this.successMessage = response.data.message || 'Pessoa restaurada com sucesso!';
                     // Remove a pessoa da lista localmente
@@ -115,7 +104,6 @@ export default {
             axios.delete(`/api/admin/${id}/force-delete`) // Nova rota API para exclusão permanente
                 .then(response => {
                     this.successMessage = response.data.message || 'Pessoa excluída permanentemente!';
-                    // Remove a pessoa da lista localmente
                     this.pessoas = this.pessoas.filter(pessoa => pessoa.id !== id);
                 })
                 .catch(error => {
@@ -128,12 +116,12 @@ export default {
 </script>
 
 <style scoped>
-/* Adicione estilos específicos para este componente se necessário */
 .card-header {
-    background-color: #f8d7da; /* Light red for deleted items */
+    background-color: #f8d7da;
     border-bottom: 1px solid #dc3545;
 }
+
 .card-title {
-    color: #dc3545; /* Red text for deleted items */
+    color: #dc3545;
 }
 </style>

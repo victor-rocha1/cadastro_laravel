@@ -7,14 +7,14 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EnderecoController; 
 use Illuminate\Support\Facades\Route;
 
-// Rotas de Autenticação (exemplo, ajuste conforme sua AuthController)
+// autenticação 
 Route::get('/login', [AuthController::class, 'loginForm'])->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 Route::get('/register', [AuthController::class, 'create'])->name('register')->middleware('guest');
 Route::post('/register', [AuthController::class, 'store'])->name('register.store')->middleware('guest');
 
-// Rotas para usuários autenticados (comuns e admins)
+// Rotas para usuários autenticados 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
         return view('home');
@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('cadastro.endereco');
 });
 
-// rotas para Administradores
+// rotas para admin
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/lista', [AdminController::class, 'listar'])->name('admin.listar');
     Route::get('/admin/{id}/edit', [AdminController::class, 'edit'])->name('admin.edit');

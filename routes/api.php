@@ -9,7 +9,7 @@ use App\Http\Controllers\PessoaController;
 use App\Http\Controllers\EnderecoController;
 use App\Models\Pessoa;
 
-// Rotas de API para autenticação
+// autenticação
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
@@ -17,7 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::post('/logout', [AuthController::class, 'logout']); // << ROTA DE LOGOUT API
+    Route::post('/logout', [AuthController::class, 'logout']); 
     
     // Suas rotas de API que exigem autenticação
     Route::post('/pessoa', [PessoaController::class, 'cadastro']);
@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-// Rotas de API para Administradores
+// administradores
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('/pessoas', [AdminController::class, 'apiListar']);
     Route::get('/admin/{id}', [AdminController::class, 'getPessoa']);
