@@ -89,7 +89,6 @@ export default {
               localStorage.setItem('is_admin', response.data.is_admin);
             })
             .catch(() => {
-              // Não autenticado ou erro, limpar localStorage e redirecionar
               localStorage.removeItem('user');
               localStorage.removeItem('is_admin');
               window.location.href = '/login';

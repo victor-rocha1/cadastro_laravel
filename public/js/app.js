@@ -24746,7 +24746,6 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
             localStorage.setItem('user', JSON.stringify(response.data));
             localStorage.setItem('is_admin', response.data.is_admin);
           })["catch"](function () {
-            // Não autenticado ou erro, limpar localStorage e redirecionar
             localStorage.removeItem('user');
             localStorage.removeItem('is_admin');
             window.location.href = '/login';
@@ -24896,7 +24895,7 @@ __webpack_require__.r(__webpack_exports__);
     excluirPessoa: function excluirPessoa() {
       if (confirm("Tem certeza que deseja excluir este cadastro? Ele será arquivado, mas não removido permanentemente.")) {
         axios__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/admin/".concat(this.id)).then(function (res) {
-          alert(res.data.message || "Cadastro excluído com sucesso (soft delete)!");
+          alert(res.data.message || "Cadastro excluído com sucesso!");
           window.location.href = "/lista";
         })["catch"](function (err) {
           console.error("Erro ao excluir cadastro:", err);
@@ -25023,7 +25022,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.carregarPessoasExcluidas();
-    // A mensagem de sucesso ainda pode vir da window, se houver
     this.successMessage = window.successMessage || '';
   },
   methods: {
@@ -25055,8 +25053,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     restaurarPessoa: function restaurarPessoa(id) {
       var _this2 = this;
-      axios__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/admin/".concat(id, "/restore")) // Nova rota API para restaurar
-      .then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/admin/".concat(id, "/restore")).then(function (response) {
         _this2.successMessage = response.data.message || 'Pessoa restaurada com sucesso!';
         // Remove a pessoa da lista localmente
         _this2.pessoas = _this2.pessoas.filter(function (pessoa) {
@@ -25077,7 +25074,6 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/admin/".concat(id, "/force-delete")) // Nova rota API para exclusão permanente
       .then(function (response) {
         _this3.successMessage = response.data.message || 'Pessoa excluída permanentemente!';
-        // Remove a pessoa da lista localmente
         _this3.pessoas = _this3.pessoas.filter(function (pessoa) {
           return pessoa.id !== id;
         });
@@ -28700,7 +28696,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\r\n/* Adicione estilos específicos para este componente se necessário */\n.card-header[data-v-12bf7f1a] {\r\n    background-color: #f8d7da; /* Light red for deleted items */\r\n    border-bottom: 1px solid #dc3545;\n}\n.card-title[data-v-12bf7f1a] {\r\n    color: #dc3545; /* Red text for deleted items */\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.card-header[data-v-12bf7f1a] {\r\n    background-color: #f8d7da;\r\n    border-bottom: 1px solid #dc3545;\n}\n.card-title[data-v-12bf7f1a] {\r\n    color: #dc3545;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
